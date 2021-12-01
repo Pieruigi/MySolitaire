@@ -6,7 +6,12 @@ namespace Zoca.UI
 {
     public class MySolitaireGameUI : GameUI
     {
-      
+        protected override void Start()
+        {
+            base.Start();
+
+
+        }
     }
 
 }
