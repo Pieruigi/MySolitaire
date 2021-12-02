@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Zoca.Cards
+namespace Zoca.Logic
 {
 
     /// <summary>
@@ -27,9 +27,9 @@ namespace Zoca.Cards
         /// <param name="minValue"></param>
         /// <param name="maxValue"></param>
         /// <returns></returns>
-        public static Deck CreateDeck(int minValue, int maxValue)
+        public static CardPile CreateDeck(int minValue, int maxValue)
         {
-            Deck deck = new Deck();
+            CardPile deck = new CardPile();
 
             // Fill the deck
             int start = minValue;
@@ -41,7 +41,7 @@ namespace Zoca.Cards
                 Card card = new Card(new object[] { i });
 
                 // Add to deck
-                deck.AddCard(card);
+                deck.PushCard(card);
             }
 
             return deck;

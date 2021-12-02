@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Zoca.Cards
+namespace Zoca.Logic
 {
     /// <summary>
     /// Can be used to manage italian cards type ( napoletane, piacentine etc ).
@@ -20,9 +20,9 @@ namespace Zoca.Cards
         /// Create a deck using a specific range of cards and all the suits
         /// </summary>
         /// <returns></returns>
-        public static new Deck CreateDeck(int minValue, int maxValue)
+        public static new CardPile CreateDeck(int minValue, int maxValue)
         {
-            Deck deck = new Deck();
+            CardPile deck = new CardPile();
 
             for(int suit=0; suit<4; suit++)
             {
@@ -32,7 +32,7 @@ namespace Zoca.Cards
                     object[] dataArray = new object[] { value, suit };
                     Card card = new Card(dataArray);
                     // Add to deck
-                    deck.AddCard(card);
+                    deck.PushCard(card);
                 }
             }
 
@@ -43,7 +43,7 @@ namespace Zoca.Cards
         /// Create a deck using all the available cards of a real italian deck.
         /// </summary>
         /// <returns></returns>
-        public static Deck CreateDeck()
+        public static CardPile CreateDeck()
         {
             return CreateDeck(1, 10);
         }

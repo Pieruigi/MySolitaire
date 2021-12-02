@@ -89,7 +89,7 @@ namespace Zoca
         public Sprite[] GetSetOfCardsBackSprites()
         {
             string deckFolder = System.IO.Path.Combine(DecksResourcesBaseFolder, deckResourceFolder);
-            deckFolder = System.IO.Path.Combine(deckFolder, DeckResourcesBackFolder);
+            //deckFolder = System.IO.Path.Combine(deckFolder, DeckResourcesBackFolder);
             return Resources.LoadAll<Sprite>(deckFolder);
         }
         #endregion

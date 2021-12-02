@@ -2,31 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Zoca.Cards
+namespace Zoca.Logic
 {
 
     /// <summary>
     /// A deck is simply a collection of cards.
-    /// It has some basic function, such as ShuffleCards() and GetTheFirstCard()
+    /// It has some basic function, such as Shuffle(), Push() and Pop()
     /// </summary>
-    public class Deck
+    public class CardPile
     {
         #region private fields
         List<Card> cards;
         #endregion
 
+       
+
         #region public methods
-        public Deck()
+        public CardPile()
         {
+           
             cards = new List<Card>();
         }
 
         /// <summary>
-        /// Add a new card to the deck.
-        /// This can be used every time a new game starts to create a specific deck.
+        /// Add a new card to the top.
         /// </summary>
         /// <param name="card"></param>
-        public void AddCard(Card card)
+        public void PushCard(Card card)
         {
             cards.Add(card);
         }
@@ -41,24 +43,24 @@ namespace Zoca.Cards
         }
 
         /// <summary>
-        /// Gets the card at a specific index
+        /// Returns a card at a specific index without removing it.
         /// </summary>
+        /// <param name="index"></param>
         /// <returns></returns>
         public Card GetCardAt(int index)
         {
-            // The first card of the dack
-            Card ret = cards[index];
-
-            return ret;
+            return cards[index];
         }
 
         /// <summary>
-        /// Removes the card at a specific index
+        /// Removes the last cards ( which is the last pushed in )
         /// </summary>
         /// <param name="index"></param>
-        public void RemoveCardAt(int index)
+        public Card PopCard()
         {
-            cards.RemoveAt(index);
+            Card card = cards[cards.Count-1];
+            cards.RemoveAt(cards.Count-1);
+            return card;
         }
 
         /// <summary>

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Zoca.Cards
+namespace Zoca.Logic
 {
     /// <summary>
     /// Each card is represented by an internal array of string which is interpreted by some specific 

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Zoca.Cards;
 using Zoca.Logic;
 
 namespace Zoca.Test
@@ -40,7 +39,7 @@ namespace Zoca.Test
 
     public class TestDeck : MonoBehaviour
     {
-        Deck deck;
+        CardPile deck;
 
         private void Awake()
         {
@@ -53,8 +52,8 @@ namespace Zoca.Test
             // Log
             while (!deck.IsEmpty())
             {
-                Card card = deck.GetCardAt(0);
-                deck.RemoveCardAt(0);
+                Card card = deck.PopCard();
+                
                 Debug.Log(card);
             }
         }

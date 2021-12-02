@@ -11,9 +11,15 @@ namespace Zoca.Logic
     /// </summary>
     public abstract class GameLogic : MonoBehaviour
     {
-
+        #region properties
         public static GameLogic Instance { get; private set; }
 
+
+        #endregion
+
+                
+
+      
         protected virtual void Awake()
         {
             if (!Instance)
