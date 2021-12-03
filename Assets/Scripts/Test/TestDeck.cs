@@ -6,37 +6,8 @@ using Zoca.Logic;
 namespace Zoca.Test
 {
 
-    class TestChild
-    {
-        
-        public static TestChild GetInstance()
-        {
-            return new TestChild();
-        }
-
-        public virtual void Test()
-        {
-            Debug.Log("TestChild:" + this.GetType());
-        }
-    }
-
-    class TestParent: TestChild
-    {
-        public new static TestParent GetInstance()
-        {
-            return new TestParent();
-        }
-
-        public override void Test()
-        {
-            Debug.Log("TestParent:" + this.GetType());
-        }
-        public  void Test2()
-        {
-            Debug.Log("TestParent-2:" + this.GetType());
-        }
-    }
-
+  
+  
     public class TestDeck : MonoBehaviour
     {
         CardPile deck;
@@ -61,10 +32,7 @@ namespace Zoca.Test
         // Start is called before the first frame update
         void Start()
         {
-            Debug.LogFormat("[GameLogic type:{0}]", GameLogic.Instance.GetType());
-            TestChild.GetInstance().Test();
-            TestParent.GetInstance().Test();
-            TestParent.GetInstance().Test2();
+          
         }
 
         // Update is called once per frame

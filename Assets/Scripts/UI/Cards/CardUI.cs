@@ -22,6 +22,14 @@ namespace Zoca.UI
         {
             get { return image.sprite == frontSprite; }
         }
+
+        /// <summary>
+        /// Only child can access this object
+        /// </summary>
+        protected GameUI GameUI
+        {
+            get { return gameUI; }
+        }
         #endregion
 
         #region private fields
@@ -30,11 +38,13 @@ namespace Zoca.UI
         Image image; // The image of the current ui
 
         Sprite frontSprite, backSprite;
+        GameUI gameUI; // The parent game ui
         #endregion
 
         #region protected methods
         protected virtual void Awake()
         {
+            gameUI = GetComponentInParent<GameUI>();
             image = GetComponent<Image>();
         }
 
@@ -67,6 +77,7 @@ namespace Zoca.UI
             // If the deck has multiple suits then the sprite with suit 000 is taken.
             return new List<Sprite>(sprites).Find(c => c.name.StartsWith(valueStr));
         }
+
         #endregion
 
         #region private methods
@@ -109,14 +120,24 @@ namespace Zoca.UI
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// This method is called wvery time we click on a card ui.
+        /// We don't try to access directly to the game logic, instead we call the GameUI
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnPointerDown(PointerEventData eventData)
         {
-            GameUI.Instance.OnPointerDown(this, eventData);
+            GameUI.OnPointerDown(this, eventData);
         }
 
+        /// <summary>
+        /// This is called every time we release.
+        /// /// We don't try to access directly to the game logic, instead we call the GameUI
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnPointerUp(PointerEventData eventData)
         {
-            GameUI.Instance.OnPointerDown(this, eventData);
+            GameUI.OnPointerDown(this, eventData);
         }
 
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Zoca.Logic
 {
@@ -11,20 +12,23 @@ namespace Zoca.Logic
     /// </summary>
     public abstract class GameLogic : MonoBehaviour
     {
-        #region properties
-        public static GameLogic Instance { get; private set; }
+        public static UnityAction<GameLogic> OnCreate;
 
+        #region properties
 
         #endregion
 
-                
 
-      
+        #region private fields
+        static GameLogic instance; // Singletone
+        #endregion
+
         protected virtual void Awake()
         {
-            if (!Instance)
+            if (!instance)
             {
-                Instance = this;
+                instance = this;
+                OnCreate?.Invoke(this);
             }
             else
             {

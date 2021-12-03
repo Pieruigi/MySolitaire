@@ -10,12 +10,16 @@ namespace Zoca.UI
     {
 
         #region properties
-        public static GameUI Instance { get; private set; }
-
+        
         public CardUI CardPrefab
         {
             get { return cardPrefab; }
         }
+
+        protected GameLogic GameLogic
+        {
+            get { return gameLogic; }
+        } 
         #endregion
 
         #region private fields
@@ -23,17 +27,24 @@ namespace Zoca.UI
         CardUI cardPrefab; // The card used in the game
 
 
+        GameLogic gameLogic;
+        static GameUI instance; // Singletone
         #endregion
 
         #region protected methods
         public abstract void OnPointerDown(IPointerDownHandler handler, PointerEventData eventData);
         public abstract void OnPointerUp(IPointerUpHandler handler, PointerEventData eventData);
 
+        /// <summary>
+        /// This method can be overriden by the child.
+        /// </summary>
         protected virtual void Awake()
         {
-            if (!Instance)
+            if (!instance)
             {
-                Instance = this;
+                instance = this;
+
+                GameLogic.OnCreate += HandleOnGameLogicCreate;
             }
             else
             {
@@ -41,21 +52,35 @@ namespace Zoca.UI
             }
         }
 
-        // Start is called before the first frame update
+        /// <summary>
+        /// This method can be overriden by the child.
+        /// </summary>
         protected virtual void Start()
         {
            
         }
 
-        // Update is called once per frame
+        /// <summary>
+        /// This method can be overriden by the child.
+        /// </summary>
         protected virtual void Update()
         {
 
         }
 
+        /// <summary>
+        /// This method can be overriden by the child.
+        /// </summary>
         protected virtual void LateUpdate()
         {
 
+        }
+        #endregion
+
+        #region private
+        void HandleOnGameLogicCreate(GameLogic gameLogic)
+        {
+            this.gameLogic = gameLogic;
         }
         #endregion
     }

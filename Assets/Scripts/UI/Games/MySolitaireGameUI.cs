@@ -15,9 +15,6 @@ namespace Zoca.UI
 
 
         CardUI topDeckCard;
-
-        
-
         #endregion
 
         #region protected methods
@@ -26,7 +23,7 @@ namespace Zoca.UI
             base.Start();
 
             // Just cast the game logic instance for further use
-            MySolitaireGameLogic gameLogic = (MySolitaireGameLogic)MySolitaireGameLogic.Instance;
+            MySolitaireGameLogic gameLogic = (MySolitaireGameLogic)GameLogic;
 
             // Create a card and put it on the main deck pivot
             topDeckCard = Instantiate(CardPrefab, mainDeckPivot, false);
