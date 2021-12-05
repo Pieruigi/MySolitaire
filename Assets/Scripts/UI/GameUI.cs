@@ -7,6 +7,10 @@ namespace Zoca.UI
 {
     public class GameUI : MonoBehaviour
     {
+        #region private fields
+        List<Interactor> interactors;
+        #endregion
+
         private void Awake()
         {
             Ruler.Instance.DebugAll();
@@ -22,6 +26,11 @@ namespace Zoca.UI
         void Update()
         {
 
+        }
+
+        public int GetIndex(Interactor interactor)
+        {
+            return interactors.FindIndex(i => i == interactor);
         }
     }
 

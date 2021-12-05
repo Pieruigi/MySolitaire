@@ -168,7 +168,10 @@ namespace Zoca.Logic
             return ret;
         }
 
-        
+        public CardPile GetCardPileAt(int index)
+        {
+            return piles[index];
+        }
 
         public void DebugAll()
         {
