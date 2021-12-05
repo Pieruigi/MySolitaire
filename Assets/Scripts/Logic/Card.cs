@@ -24,6 +24,10 @@ namespace  Zoca.Logic
             this.suit = suit;
         }
 
+        public override string ToString()
+        {
+            return string.Format("[Card Value:{0}, Suit:{1}]", value, suit);
+        }
     }
 
 }
