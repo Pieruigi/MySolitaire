@@ -12,10 +12,10 @@ namespace Zoca.Logic
         public CardPile DiscardPile { get; private set; } = new CardPile();
 
         public IList<CardPile> CrossPiles { get; private set; } = new List<CardPile>();
-        public CardPile NorthPile { get; private set; } = new CardPile();
-        public CardPile EastPile { get; private set; } = new CardPile();
-        public CardPile SouthPile { get; private set; } = new CardPile();
-        public CardPile WestPile { get; private set; } = new CardPile();
+        //public CardPile NorthPile { get; private set; } = new CardPile();
+        //public CardPile EastPile { get; private set; } = new CardPile();
+        //public CardPile SouthPile { get; private set; } = new CardPile();
+        //public CardPile WestPile { get; private set; } = new CardPile();
         // Aces
         public CardPile NorthEastPile { get; private set; } = new CardPile();
         public CardPile SouthEastPile { get; private set; } = new CardPile();
@@ -25,14 +25,14 @@ namespace Zoca.Logic
 
         #region private fields
 
-        
 
-        
-        
+
+
+
 
         #endregion
 
-
+        #region protected methods
         protected override void Awake()
         {
             base.Awake();
@@ -53,7 +53,60 @@ namespace Zoca.Logic
 
         }
 
-      
+
+       
+        #endregion
+
+        #region public methods
+       
+
+        public override bool IsSelectable(Card card)
+        {
+
+
+            Debug.Log("Check IsSelectable:" + card);
+            Debug.Log("MainPile.lastCard:" + MainPile.GetLastCard());
+            if (card == MainPile.GetLastCard())
+            {
+                return true;
+            }
+           
+            return false;
+        }
+
+        public override bool IsSelectable(CardPile cardPile)
+        {
+            return !cardPile.IsSelected();
+        }
+
+        public override bool IsUnselectable(Card card)
+        {
+            return card.IsSelected();
+        }
+
+        
+
+        public override bool IsUnselectable(CardPile cardPile)
+        {
+            return cardPile.IsSelected();
+        }
+
+        public override void Select(Card card)
+        {
+            // Do some stuff here
+            Debug.LogFormat("MySolitaireGameLogic - Select card: {0}", card);
+            card.SetSelected(true);
+
+        }
+
+        public override void Unselect(Card card)
+        {
+            // Do some stuff here
+            Debug.LogFormat("MySolitaireGameLogic - Unselect card: {0}", card);
+            card.SetSelected(false);
+        }
+        #endregion
+
     }
 
 }

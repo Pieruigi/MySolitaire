@@ -11,10 +11,26 @@ namespace Zoca.UI
 
         #region private fields
         [SerializeField]
-        Transform mainDeckPivot;
+        CardPileUI mainCardPileUI;
+
+
+        [SerializeField]
+        CardPileUI northCardPileUI;
+        [SerializeField]
+        CardPileUI eastCardPileUI;
+        [SerializeField]
+        CardPileUI southCardPileUI;
+        [SerializeField]
+        CardPileUI westCardPileUI;
 
 
         CardUI topDeckCard;
+        CardUI northCard;
+        CardUI eastCard;
+        CardUI southCard;
+        CardUI westCard;
+
+
         #endregion
 
         #region protected methods
@@ -26,31 +42,69 @@ namespace Zoca.UI
             MySolitaireGameLogic gameLogic = (MySolitaireGameLogic)GameLogic;
 
             // Create a card and put it on the main deck pivot
-            topDeckCard = Instantiate(CardPrefab, mainDeckPivot, false);
+            topDeckCard = Instantiate(CardPrefab, mainCardPileUI.transform, false);
 
             // We need cards from piles, not from deck
 
             // Get the first card from the deck
-            Card card = gameLogic.MainPile.GetCardAt(0);
+            Card card = gameLogic.MainPile.GetLastCard();
             
             // Set the card in the ui
             topDeckCard.SetCard(card);
             topDeckCard.ShowBack();
+
+            // Init the card piles
+            //northCardPileUI.SetCardPile(gameLogic.NorthPile);
+            //eastCardPileUI.SetCardPile(gameLogic.EastPile);
+            //southCardPileUI.SetCardPile(gameLogic.SouthPile);
+            //westCardPileUI.SetCardPile(gameLogic.WestPile);
+
+            //// Set cards ( I should let the card pile ui do this )
+            //northCard = Instantiate(CardPrefab, northCardPileUI.transform, false);
+            //northCard.SetCard(northCardPileUI.CardPile.GetLastCard());
+            //northCard.ShowFront();
+            //westCard = Instantiate(CardPrefab, westCardPileUI.transform, false);
+            //westCard.SetCard(westCardPileUI.CardPile.GetLastCard());
+            //westCard.ShowFront();
+            //southCard = Instantiate(CardPrefab, southCardPileUI.transform, false);
+            //southCard.SetCard(southCardPileUI.CardPile.GetLastCard());
+            //southCard.ShowFront();
+            //eastCard = Instantiate(CardPrefab, eastCardPileUI.transform, false);
+            //eastCard.SetCard(eastCardPileUI.CardPile.GetLastCard());
+            //eastCard.ShowFront();
+
         }
 
 
-        public override void OnPointerDown(IPointerDownHandler handler, PointerEventData eventData)
+
+
+        #endregion
+
+
+        #region public methods
+        public override void Select(CardUI cardUI)
         {
-            throw new System.NotImplementedException();
-            // I should call logic here
+            // Apply some effect
+            Debug.LogFormat("Select cardUI:" + cardUI);
         }
 
-        public override void OnPointerUp(IPointerUpHandler handler, PointerEventData eventData)
+        public override void Unselect(CardUI cardUI)
         {
-            throw new System.NotImplementedException();
-            // I should call logic here
+            // Unapply the selected effect
+            Debug.LogFormat("Unselect cardUI:" + cardUI);
         }
 
+        public override void Select(CardPileUI cardPileUI)
+        {
+            // Apply some effect
+            
+        }
+
+        public override void Unselect(CardPileUI cardPileUI)
+        {
+            // Unapply the selected effect
+           
+        }
         #endregion
     }
 

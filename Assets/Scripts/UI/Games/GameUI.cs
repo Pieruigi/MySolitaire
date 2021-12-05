@@ -32,8 +32,13 @@ namespace Zoca.UI
         #endregion
 
         #region protected methods
-        public abstract void OnPointerDown(IPointerDownHandler handler, PointerEventData eventData);
-        public abstract void OnPointerUp(IPointerUpHandler handler, PointerEventData eventData);
+        public abstract void Select(CardUI cardUI);
+        public abstract void Unselect(CardUI cardUI);
+
+        public abstract void Select(CardPileUI cardPileUI);
+        public abstract void Unselect(CardPileUI cardPileUI);
+
+
 
         /// <summary>
         /// This method can be overriden by the child.
@@ -75,6 +80,8 @@ namespace Zoca.UI
         {
 
         }
+
+        
         #endregion
 
         #region private
@@ -82,6 +89,95 @@ namespace Zoca.UI
         {
             this.gameLogic = gameLogic;
         }
+        #endregion
+
+        /// <summary>
+        /// Called by the card ui when the player clicks on it.
+        /// </summary>
+        /// <param name="handler"></param>
+        /// <param name="eventData"></param>
+        #region public methods
+        public bool IsInteractable(CardUI cardUI)
+        {
+            if (cardUI.Card.IsSelected() && !gameLogic.IsUnselectable(cardUI.Card))
+                return false;
+            if (!cardUI.Card.IsSelected() && !gameLogic.IsSelectable(cardUI.Card))
+                return false;
+
+            return true;
+            
+        }
+
+        public bool IsInteractable(CardPileUI cardPileUI)
+        {
+            if (cardPileUI.CardPile.IsSelected() && !gameLogic.IsUnselectable(cardPileUI.CardPile))
+                return false;
+            if (!cardPileUI.CardPile.IsSelected() && !gameLogic.IsSelectable(cardPileUI.CardPile))
+                return false;
+
+            return true;
+
+        }
+
+        public virtual void OnPointerDown(IPointerDownHandler handler, PointerEventData eventData)
+        {
+            Debug.LogFormat("GameUI - On pointer down: {0}", handler);
+            // Check which object the player clicked on
+            
+            // Card interaction
+            if(((MonoBehaviour)handler).GetType().IsSubclassOf(typeof(CardUI)))
+            {
+                Debug.LogFormat("GameUI - Is CardUI type: {0}", true);
+                // Clicked on a card, check if can be activated ( selected for example )
+                // Get the card ui object
+                CardUI cardUI = (CardUI)handler;
+                
+                if (!cardUI.Card.IsSelected())
+                {
+                    Debug.LogFormat("GameUI - Card is not selected: {0}", cardUI);
+                    // The card is not selected, we check if it can be selected.
+                    if (GameLogic.IsSelectable(cardUI.Card))
+                    {
+                        // The card can be selected.
+                        // Implement the method in the child class.
+                        GameLogic.Select(cardUI.Card);
+                        // Get card target
+
+                    }
+                }
+                else
+                {
+                    // The card is selected, we check if we can unselect it.
+                    if(GameLogic.IsUnselectable(cardUI.Card))
+                    {
+                        // The card can be unselected.
+                        // Implement the method in the child class.
+                        GameLogic.Unselect(cardUI.Card);
+                    }
+                }
+                
+            }
+
+            // Card pile interaction
+            if (((MonoBehaviour)handler).GetType().IsSubclassOf(typeof(CardPileUI)))
+            {
+                Debug.Log("CardPileClicked");
+            }
+
+
+        }
+
+        /// <summary>
+        /// Called by the card ui when the player releases it.
+        /// </summary>
+        /// <param name="handler"></param>
+        /// <param name="eventData"></param>
+        public virtual void OnPointerUp(IPointerUpHandler handler, PointerEventData eventData)
+        {
+            
+        }
+
+        
         #endregion
     }
 

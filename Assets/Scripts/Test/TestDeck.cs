@@ -6,10 +6,12 @@ using Zoca.Logic;
 namespace Zoca.Test
 {
 
-  
+    
   
     public class TestDeck : MonoBehaviour
     {
+        
+
         CardPile deck;
 
         private void Awake()

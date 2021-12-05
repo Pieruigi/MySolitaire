@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Zoca.Logic
 {
@@ -11,8 +12,14 @@ namespace Zoca.Logic
     /// </summary>
     public class CardPile
     {
+        #region delegates
+        public UnityAction OnSelected;
+        public UnityAction OnUnselected;
+        #endregion
+
         #region private fields
         List<Card> cards;
+        bool selected = false;
         #endregion
 
        
@@ -53,6 +60,19 @@ namespace Zoca.Logic
         }
 
         /// <summary>
+        /// Get the last card of the pile, which is the last one pushed in.
+        /// The card is not removed.
+        /// </summary>
+        /// <returns></returns>
+        public Card GetLastCard()
+        {
+            if (cards.Count == 0)
+                return null;
+
+            return cards[cards.Count - 1];
+        }
+
+        /// <summary>
         /// Removes the last cards ( which is the last pushed in )
         /// </summary>
         /// <param name="index"></param>
@@ -83,6 +103,21 @@ namespace Zoca.Logic
             cards = tmp;
         }
 
+        public void SetSelected(bool value)
+        {
+            selected = value;
+            if (value)
+                OnSelected?.Invoke();
+            else
+                OnUnselected?.Invoke();
+        }
+
+
+
+        public bool IsSelected()
+        {
+            return selected;
+        }
         #endregion
 
     }

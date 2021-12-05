@@ -13,6 +13,7 @@ namespace Zoca.Logic
     public abstract class GameLogic : MonoBehaviour
     {
         public static UnityAction<GameLogic> OnCreate;
+        //public void UnityAction<>
 
         #region properties
 
@@ -23,6 +24,45 @@ namespace Zoca.Logic
         static GameLogic instance; // Singletone
         #endregion
 
+        #region abstract methods
+        
+
+        /// <summary>
+        /// It depends on the game implementation.
+        /// </summary>
+        /// <param name="card"></param>
+        /// <returns></returns>
+        public abstract bool IsSelectable(Card card);
+
+        /// <summary>
+        /// It depends on the game implementation.
+        /// For some games each card can always be deselected, for others this could not be possible ( for
+        /// example in a game like memery when you select a card you flip it, so it can not be unselected ).
+        /// </summary>
+        /// <param name="card"></param>
+        /// <returns></returns>
+        public abstract bool IsUnselectable(Card card);
+
+        /// <summary>
+        /// Select the card and check action targets for activation.
+        /// </summary>
+        /// <param name="card"></param>
+        public abstract void Select(Card card);
+
+        /// <summary>
+        /// Unselect the card and check action targets for deactivation.
+        /// </summary>
+        /// <param name="card"></param>
+        public abstract void Unselect(Card card);
+
+        public abstract bool IsSelectable(CardPile cardPile);
+
+        public abstract bool IsUnselectable(CardPile cardPile);
+                
+
+        #endregion
+
+        #region protected methods
         protected virtual void Awake()
         {
             if (!instance)
@@ -52,6 +92,7 @@ namespace Zoca.Logic
         {
 
         }
+        #endregion
     }
 
 }
