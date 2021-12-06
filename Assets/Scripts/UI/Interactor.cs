@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zoca.Logic;
 
 namespace Zoca.UI
 {
-    public class Interactor : MonoBehaviour
+    public class Interactor : MonoBehaviour, IPointerDownHandler
     {
 
         #region private fields
@@ -52,7 +53,23 @@ namespace Zoca.UI
         #endregion
 
         #region public
-       
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            gameUI.Interact(this);
+        }
+
+        public void Select()
+        {
+            Debug.Log("Selecting...");
+            cardObject.GetComponent<CardUI>().Select();
+            
+        }
+
+        public void Unselect()
+        {
+            Debug.Log("Unselecting...");
+            cardObject.GetComponent<CardUI>().Unselect();
+        }
 
         #endregion
 

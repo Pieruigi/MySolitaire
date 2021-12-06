@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,15 +9,21 @@ namespace Zoca.UI
 {
     public class CardUI : MonoBehaviour
     {
+        [SerializeField]
+        float flipTime = 1f;
+
         Card card;
         Image image;
-
+      
         Sprite frontSprite;
         Sprite backSprite;
+
+ 
 
         private void Awake()
         {
             image = GetComponent<Image>();
+          
         }
 
         // Start is called before the first frame update
@@ -51,6 +58,26 @@ namespace Zoca.UI
             return sprites[0];
         }
 
+        IEnumerator Flip()
+        {
+            float oldX = transform.localScale.x;
+            // Flip out
+            yield return transform.DOScaleX(0, flipTime);
+
+            Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+            // Set sprite
+            if (IsFront())
+                ShowBack();
+            else
+                ShowFront();
+
+            // Flip in
+            yield return transform.DOScaleX(oldX, flipTime);
+
+            GetComponent<Shaker>().Play();
+        }
+
         public void SetCard(Card card)
         {
             this.card = card;
@@ -61,15 +88,41 @@ namespace Zoca.UI
 
         public void ShowFront()
         {
+            
             image.sprite = frontSprite;
             image.enabled = true;
         }
 
         public void ShowBack()
         {
+            
             image.sprite = backSprite;
             image.enabled = true;
         }
+
+        public bool IsFront()
+        {
+            return image == frontSprite;
+        }
+
+        public void Select()
+        {
+            if (IsFront())
+            {
+                GetComponent<Shaker>().Play();
+            }
+            else
+            {
+                // Flip card
+                StartCoroutine(Flip());
+            }
+        }
+
+        public void Unselect()
+        {
+            GetComponent<Shaker>().Stop();
+        }
+
 
     }
 

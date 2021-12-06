@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2690902370598979791}
   - component: {fileID: 3497119773842244873}
   - component: {fileID: -1067980259419094567}
+  - component: {fileID: -7141019207837068753}
   m_Layer: 5
   m_Name: CardUI
   m_TagString: Untagged
@@ -88,3 +89,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9329323233e9ed4d98930afca513657, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flipTime: 5
+--- !u!114 &-7141019207837068753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6202018209107325901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53df9b625e8f73646909f15dfe928886, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angle: 20
+  time: 0.1
