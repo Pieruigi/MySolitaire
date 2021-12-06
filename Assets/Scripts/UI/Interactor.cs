@@ -10,10 +10,7 @@ namespace Zoca.UI
     {
 
         #region private fields
-        [SerializeField]
-        GameObject cardPrefab;
-
-
+        
         CardPile pile;
         GameUI gameUI;
         GameObject cardObject; // The card to show
@@ -25,12 +22,26 @@ namespace Zoca.UI
             gameUI = GetComponentInParent<GameUI>();
             // Set the card pile
             pile = Ruler.Instance.GetCardPileAt(gameUI.GetIndex(this));
+
         }
 
         // Start is called before the first frame update
         void Start()
         {
+            if (!pile.IsEmpty())
+            {
+                // Create card 
+                cardObject = Instantiate(gameUI.CardPrefab, transform, false); // Create object
 
+                // Set the card
+                cardObject.GetComponent<CardUI>().SetCard(pile.GetLast());
+
+                // If is the main pile show the back, otherwise show the front
+                if(gameUI.GetIndex(this) == 0)
+                    cardObject.GetComponent<CardUI>().ShowBack();
+                else
+                    cardObject.GetComponent<CardUI>().ShowFront();
+            }
         }
 
         // Update is called once per frame
@@ -41,25 +52,7 @@ namespace Zoca.UI
         #endregion
 
         #region public
-        /// <summary>
-        /// Show the front of the last card
-        /// </summary>
-        public void ShowFront()
-        {
-            if(cardObject == null)
-                cardObject = Instantiate(cardPrefab, transform, false); // Create object
-            
-            // Set image
-
-        }
-
-        /// <summary>
-        /// Show the back of the deck
-        /// </summary>
-        public void ShowBack()
-        {
-
-        }
+       
 
         #endregion
 

@@ -7,7 +7,18 @@ namespace Zoca.UI
 {
     public class GameUI : MonoBehaviour
     {
+        #region properties
+        public GameObject CardPrefab
+        {
+            get { return cardPrefab; }
+        }
+        #endregion
+
         #region private fields
+        [SerializeField]
+        GameObject cardPrefab;
+
+        [SerializeField]
         List<Interactor> interactors;
         #endregion
 
