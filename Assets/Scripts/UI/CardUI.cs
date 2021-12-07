@@ -36,6 +36,7 @@ namespace Zoca.UI
         float shakeDir = 1;
         #endregion
 
+        #region private methods
         private void Awake()
         {
             image = GetComponent<Image>();
@@ -74,40 +75,9 @@ namespace Zoca.UI
             return sprites[0];
         }
 
-        IEnumerator FlipAndStartShaking()
-        {
-            yield return Flip();
+        
 
-            GetComponent<Shaker>().Play();
-        }
-
-        IEnumerator StopShakingAndFlip()
-        {
-            GetComponent<Shaker>().Stop();
-            while (GetComponent<Shaker>().IsPlaying())
-            {
-                yield return null;
-            }
-            yield return Flip();
-        }
-
-        IEnumerator Flip()
-        {
-            float oldX = transform.localScale.x;
-            // Flip out
-            yield return transform.DOScaleX(0, flipTime).WaitForCompletion();
-
-            Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-
-            // Set sprite
-            if (IsFront())
-                ShowBack();
-            else
-                ShowFront();
-
-            // Flip in
-            yield return transform.DOScaleX(oldX, flipTime).WaitForCompletion();
-        }
+        
 
         void Shake()
         {
@@ -118,11 +88,12 @@ namespace Zoca.UI
                 return;
             }
 
-
             shakeDir *= -1;
             transform.DOLocalRotate(new Vector3(0, 0, shakeDir * shakeAngle), shakeTime).SetLoops(2, LoopType.Yoyo).OnComplete(Shake);
         }
+        #endregion
 
+        #region public methods
         public void StartShaking()
         {
             if (shaking)
@@ -140,7 +111,7 @@ namespace Zoca.UI
             stopShaking = true;
         }
 
-        public bool IsShakingg()
+        public bool IsShaking()
         {
             return shaking;
         }
@@ -170,47 +141,41 @@ namespace Zoca.UI
             return image.sprite == frontSprite;
         }
 
-        
 
-        public void Select()
+        public IEnumerator Flip()
         {
-            Interactor.SelectionEffect selectionEffect = GetComponentInParent<Interactor>().GetSelectionEffect();
-            switch (selectionEffect)
-            {
-                case Interactor.SelectionEffect.Shake:
-                    GetComponent<Shaker>().Play();
-                    break;
-                case Interactor.SelectionEffect.Flip:
-                    StartCoroutine(Flip());
-                    break;
-                case Interactor.SelectionEffect.FlipAndShake:
-                    StartCoroutine(FlipAndStartShaking());
-                    break;
-            }
+            float oldX = transform.localScale.x;
+            // Flip out
+            yield return transform.DOScaleX(0, flipTime).WaitForCompletion();
 
+            // Set sprite
+            if (IsFront())
+                ShowBack();
+            else
+                ShowFront();
+
+            // Flip in
+            yield return transform.DOScaleX(oldX, flipTime).WaitForCompletion();
         }
 
-        public void Unselect()
+        public IEnumerator FlipAndStartShaking()
         {
-            Interactor.SelectionEffect selectionEffect = GetComponentInParent<Interactor>().GetSelectionEffect();
-            switch (selectionEffect)
-            {
-                case Interactor.SelectionEffect.Shake:
-                    GetComponent<Shaker>().Stop();
-                    break;
-                case Interactor.SelectionEffect.Flip:
-                    StartCoroutine(Flip());
-                    break;
-                case Interactor.SelectionEffect.FlipAndShake:
-                    StartCoroutine(StopShakingAndFlip());
-                    break;
-            }
+            yield return Flip();
 
-          
+            StartShaking();
         }
 
+        public IEnumerator StopShakingAndFlip()
+        {
+            StopShaking();
+            while (IsShaking())
+            {
+                yield return null;
+            }
+            yield return Flip();
+        }
+        #endregion
 
-        
 
     }
 

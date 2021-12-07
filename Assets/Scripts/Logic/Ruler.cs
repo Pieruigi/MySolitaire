@@ -40,7 +40,8 @@ namespace Zoca.Logic
 
             InitPiles(deck);
 
-            
+            // Test
+
         }
 
         void InitPiles(List<Card> deck)
@@ -57,7 +58,7 @@ namespace Zoca.Logic
                     case 0: // The main pile, copy the deck
                         pile.AddRange(deck);
                         break;
-                    case 2: // North
+                    //case 2: // North
                     case 4: // East
                     case 6: // South
                     case 8: // West
@@ -139,12 +140,18 @@ namespace Zoca.Logic
                 case 8: // West
                     // If the target pile is empty you can move
                     if (targetPile.IsEmpty())
-                        return true;
-                    // If the last card in the target pile has the same suit and value equal to card.value + 1
-                    // you can move
-                    if (targetPile.GetLast().Suit == sourcePile.GetLast().Suit &&
-                        targetPile.GetLast().Value == sourcePile.GetLast().Value + 1)
+                    {
                         ret = true;
+                    }
+                    else
+                    {
+                        // If the last card in the target pile has the same suit and value equal to card.value + 1
+                        // you can move
+                        if (targetPile.GetLast().Suit == sourcePile.GetLast().Suit &&
+                            targetPile.GetLast().Value == sourcePile.GetLast().Value + 1)
+                            ret = true;
+                    }
+                    
                     break;
                 case 3: // North East
                 case 5: // South East
@@ -152,26 +159,38 @@ namespace Zoca.Logic
                 case 9: // North West 
                     // If the target pile is empty and the card is an ace you can move
                     if (targetPile.IsEmpty() && sourcePile.GetLast().Value == 1)
+                    {
                         ret = true;
-                    // If the cards have the same suit and the target card value is equal to the source card
-                    // value - 1 you can move
-                    if (targetPile.GetLast().Suit == sourcePile.GetLast().Suit &&
-                       targetPile.GetLast().Value == sourcePile.GetLast().Value - 1)
-                        ret = true;
+                    }
+                    else
+                    {
+                        // If the cards have the same suit and the target card value is equal to the source card
+                        // value - 1 you can move
+                        if (targetPile.GetLast().Suit == sourcePile.GetLast().Suit &&
+                           targetPile.GetLast().Value == sourcePile.GetLast().Value - 1)
+                            ret = true;
+                    }
+                   
                     break;
                 
             }
 
-            if(ret)
+            if (ret)
+            {
                 piles[targetId].Add(piles[sourceId].RemoveLast());
+            }
+                
             
             return ret;
         }
+
 
         public CardPile GetCardPileAt(int index)
         {
             return piles[index];
         }
+
+        
 
         public void DebugAll()
         {
