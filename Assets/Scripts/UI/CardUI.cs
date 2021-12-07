@@ -136,6 +136,11 @@ namespace Zoca.UI
             image.enabled = true;
         }
 
+        public void Hide()
+        {
+            image.enabled = false;
+        }
+
         public bool IsFront()
         {
             return image.sprite == frontSprite;

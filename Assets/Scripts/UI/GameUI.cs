@@ -21,13 +21,19 @@ namespace Zoca.UI
         GameObject cardPrefab;
 
         [SerializeField]
+        GameObject interactorPrefab; 
+
+        [SerializeField]
+        List<Transform> interactorsPivots;
+
+        [SerializeField]
         List<Interactor> interactors;
 
         Interactor selected = null;
         bool interactable = false;
         float moveTime = 1;
-        GameObject movingObject;
-        Interactor targetInteractor;
+        GameObject toDestroy;
+        
         #endregion
 
         private void Awake()
@@ -39,15 +45,13 @@ namespace Zoca.UI
         void Start()
         {
             interactable = true;
-
-            // Set custom selection effect for interactors
-            for(int i=0; i<interactors.Count; i++)
+            interactors = new List<Interactor>();
+            // Create interactors
+            for(int i=0; i<interactorsPivots.Count; i++)
             {
-                if(i==0)
-                    interactors[i].GetComponent<Interactor>().SetSelectionEffect(Interactor.SelectionEffect.FlipAndShake);
-                else
-                    interactors[i].GetComponent<Interactor>().SetSelectionEffect(Interactor.SelectionEffect.Shake);
+                interactors.Add(CreateInteractor(i));
             }
+
             
         }
 
@@ -57,20 +61,56 @@ namespace Zoca.UI
 
         }
 
+        Interactor CreateInteractor(int index)
+        {
+            Interactor interactor = Instantiate(interactorPrefab, interactorsPivots[index], false).GetComponent<Interactor>();
+
+            // Try to set card
+            if (!Ruler.Instance.GetCardPileAt(index).IsEmpty())
+            {
+                interactor.SetCard(Ruler.Instance.GetCardPileAt(index).GetLast());
+                if (index == 0)
+                {
+                    interactor.ShowBack();
+                }
+                else
+                {
+                    interactor.ShowFront();
+                }
+            }
+            else
+            {
+                // Empty, hide
+                interactor.Hide();
+            }
+
+            // Effect and visibility
+            if (index == 0)
+            {
+                interactor.SetSelectionEffect(Interactor.SelectionEffect.FlipAndShake);
+            }
+            else
+            {
+                interactor.SetSelectionEffect(Interactor.SelectionEffect.Shake);
+            }
+
+            return interactor;
+        }
+
         public int GetIndex(Interactor interactor)
         {
             return interactors.FindIndex(i => i == interactor);
         }
 
-        public void Interact(Interactor interactor)
+        public void Interact(Interactor target)
         {
-            Debug.LogFormat("[GameUI ClickingOn:{0}", interactor);
+            Debug.LogFormat("[GameUI ClickingOn:{0}", target);
 
 
             // If the interactor is already selected and it's not the main pile you can unselect it
-            if(selected == interactor)
+            if(selected == target)
             {
-                if(GetIndex(interactor) != 0) 
+                if(GetIndex(target) != 0) 
                 {
                     // Not the main pile interactor
                     selected.Unselect();
@@ -81,27 +121,43 @@ namespace Zoca.UI
 
             // If there is another interactor selected you must check if you can move the selected card
             // on the new pile
-            if(selected != null && selected != interactor)
+            if(selected != null && selected != target)
             {
+
                 CardPile sourcePile = Ruler.Instance.GetCardPileAt(GetIndex(selected));
-                CardPile targetPile = Ruler.Instance.GetCardPileAt(GetIndex(interactor));
+                CardPile targetPile = Ruler.Instance.GetCardPileAt(GetIndex(target));
                 if (Ruler.Instance.TryMoveCard(sourcePile, targetPile))
                 {
+                    Interactor sourceInteractor = selected;
+                    Interactor targetInteractor = target;
+
+                    // Get source and target interactor ids
+                    int targetId = interactors.FindIndex(i => i == targetInteractor);
+                    int sourceId = interactors.FindIndex(i => i == sourceInteractor);
+
+                    // If the card was selected from the main deck we must change the effect in order to
+                    // avoid the card to flip when unselected
+                    if(sourceId == 0)
+                    {
+                        selected.SetSelectionEffect(Interactor.SelectionEffect.Shake);
+                    }
+
                     Debug.LogFormat("GameUI - Card can be moved.");
                     // Unselect the card
                     selected.Unselect();
 
-                    // Move the selected card to the new interactor
-                    // Get target positions
-                    Transform targetPivot = interactor.transform;
-                    // Get the source card object
-                    movingObject = selected.RemoveCardObject();
-                    // Reset the selected interactor card object
-                    selected.ResetCardObject();
-                    // Set the target interactor in order to have it in the move callback
-                    targetInteractor = interactor;
+                    // Store the interactor we will destroy after the source interactor is in position
+                    toDestroy = interactors[targetId].gameObject;
+
+                    // Put the source interactor under the target pivot
+                    interactors[targetId] = selected;
+                    selected.transform.parent = interactorsPivots[targetId];
+
+                    // Create a new interactor to replace the old one which is moving
+                    interactors[sourceId] = CreateInteractor(sourceId);
+                
                     // Move 
-                    movingObject.transform.DOMove(targetPivot.position, moveTime, true).OnComplete(HandleOnMoveComplete);
+                    sourceInteractor.transform.DOMove(targetInteractor.transform.position, moveTime, true).OnComplete(HandleOnMoveComplete);
 
                     selected = null;
                 }
@@ -113,18 +169,15 @@ namespace Zoca.UI
                 return;
             }
 
-            selected = interactor;
-            interactor.Select();
+            selected = target;
+            target.Select();
         }
 
         void HandleOnMoveComplete()
         {
-            // Destroy the moved object
-            Destroy(movingObject);
-
-            // Reset the target interactor
-            targetInteractor.ResetCardObject();
-            targetInteractor = null;
+            // We need to destroy the old interactor in the target 
+            Destroy(toDestroy);
+            
         }
     }
 

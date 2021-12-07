@@ -8,14 +8,17 @@ using Zoca.Logic;
 
 namespace Zoca.UI
 {
+    /// <summary>
+    /// Interactor is used by the UI to interact with cards.
+    /// </summary>
     public class Interactor : MonoBehaviour, IPointerDownHandler
     {
         public enum SelectionEffect { None, Shake, Flip, FlipAndShake }
 
-        
+
         #region private fields
 
-        CardPile pile;
+        Card card;
         GameUI gameUI;
         GameObject cardObject; // The card to show
         SelectionEffect selectionEffect = SelectionEffect.None;
@@ -28,15 +31,12 @@ namespace Zoca.UI
         private void Awake()
         {
             gameUI = GetComponentInParent<GameUI>();
-            // Set the card pile
-            pile = Ruler.Instance.GetCardPileAt(gameUI.GetIndex(this));
-
         }
 
         // Start is called before the first frame update
         void Start()
         {
-            ResetCardObject();
+           
         }
 
         // Update is called once per frame
@@ -45,40 +45,36 @@ namespace Zoca.UI
             
         }
 
-
         #endregion
 
         #region public
-        public void ResetCardObject()
+        public void SetCard(Card card)
         {
-            if (!pile.IsEmpty())
-            {
-                // Create card 
-                cardObject = Instantiate(gameUI.CardPrefab, transform, false); // Create object
+            this.card = card;
 
-                // Set the card
-                cardObject.GetComponent<CardUI>().SetCard(pile.GetLast());
+            // Create card 
+            cardObject = Instantiate(gameUI.CardPrefab, transform, false); // Create object
 
-                // If is the main pile show the back, otherwise show the front
-                if (gameUI.GetIndex(this) == 0)
-                    cardObject.GetComponent<CardUI>().ShowBack();
-                else
-                    cardObject.GetComponent<CardUI>().ShowFront();
-            }
-        }
-
-
-        public GameObject RemoveCardObject()
-        {
-            GameObject ret = cardObject;
-
-            cardObject = null;
-           
-            return ret;
+            // Set the card
+            cardObject.GetComponent<CardUI>().SetCard(card);
 
         }
         
-        
+        public void ShowFront()
+        {
+            cardObject.GetComponent<CardUI>().ShowFront();
+        }
+
+        public void ShowBack()
+        {
+            cardObject.GetComponent<CardUI>().ShowBack();
+        }
+
+        public void Hide()
+        {
+            if(cardObject)
+                cardObject.GetComponent<CardUI>().Hide();
+        }
 
         public void OnPointerDown(PointerEventData eventData)
         {
@@ -92,40 +88,46 @@ namespace Zoca.UI
         public void Select()
         {
 
-            Debug.Log("Selecting...");
-            CardUI cardUI = cardObject.GetComponent<CardUI>();
-
-            switch (selectionEffect)
+            if (cardObject)
             {
-                case Interactor.SelectionEffect.Shake:
-                    cardUI.StartShaking();
-                    break;
-                case Interactor.SelectionEffect.Flip:
-                    StartCoroutine(cardUI.Flip());
-                    break;
-                case Interactor.SelectionEffect.FlipAndShake:
-                    StartCoroutine(cardUI.FlipAndStartShaking());
-                    break;
+                CardUI cardUI = cardObject.GetComponent<CardUI>();
+
+                switch (selectionEffect)
+                {
+                    case Interactor.SelectionEffect.Shake:
+                        cardUI.StartShaking();
+                        break;
+                    case Interactor.SelectionEffect.Flip:
+                        StartCoroutine(cardUI.Flip());
+                        break;
+                    case Interactor.SelectionEffect.FlipAndShake:
+                        StartCoroutine(cardUI.FlipAndStartShaking());
+                        break;
+                }
             }
+            
 
         }
 
         public void Unselect()
         {
-            Debug.Log("Unselecting...");
-            CardUI cardUI = cardObject.GetComponent<CardUI>();
-            switch (selectionEffect)
+            if (cardObject)
             {
-                case Interactor.SelectionEffect.Shake:
-                    cardUI.StopShaking();
-                    break;
-                case Interactor.SelectionEffect.Flip:
-                    StartCoroutine(cardUI.Flip());
-                    break;
-                case Interactor.SelectionEffect.FlipAndShake:
-                    StartCoroutine(cardUI.StopShakingAndFlip());
-                    break;
+                CardUI cardUI = cardObject.GetComponent<CardUI>();
+                switch (selectionEffect)
+                {
+                    case Interactor.SelectionEffect.Shake:
+                        cardUI.StopShaking();
+                        break;
+                    case Interactor.SelectionEffect.Flip:
+                        StartCoroutine(cardUI.Flip());
+                        break;
+                    case Interactor.SelectionEffect.FlipAndShake:
+                        StartCoroutine(cardUI.StopShakingAndFlip());
+                        break;
+                }
             }
+            
         }
 
         public void SetSelectionEffect(SelectionEffect effect)
