@@ -9,12 +9,13 @@ namespace Zoca.UI
 {
     public class Interactor : MonoBehaviour, IPointerDownHandler
     {
-
+        public enum SelectionEffect { None, Shake, Flip, FlipAndShake }
         #region private fields
-        
+
         CardPile pile;
         GameUI gameUI;
         GameObject cardObject; // The card to show
+        SelectionEffect selectionEffect = SelectionEffect.None;
         #endregion
 
         #region private methods
@@ -71,6 +72,15 @@ namespace Zoca.UI
             cardObject.GetComponent<CardUI>().Unselect();
         }
 
+        public void SetSelectionEffect(SelectionEffect effect)
+        {
+            selectionEffect = effect;
+        }
+
+        public SelectionEffect GetSelectionEffect()
+        {
+            return selectionEffect;
+        }
         #endregion
 
 

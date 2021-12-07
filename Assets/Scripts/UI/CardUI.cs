@@ -9,16 +9,32 @@ namespace Zoca.UI
 {
     public class CardUI : MonoBehaviour
     {
+        #region properties
+        [Header("Effects")]
         [SerializeField]
         float flipTime = 1f;
 
+        [SerializeField]
+        float shakeAngle = 20f;
+
+        [SerializeField]
+        float shakeTime = 0.25f;
+        #endregion
+
+        #region private fields
         Card card;
+
+        // Graphics fields
         Image image;
-      
         Sprite frontSprite;
         Sprite backSprite;
 
- 
+
+        // Shaking fields
+        bool shaking = false;
+        bool stopShaking = false;
+        float shakeDir = 1;
+        #endregion
 
         private void Awake()
         {
@@ -58,11 +74,28 @@ namespace Zoca.UI
             return sprites[0];
         }
 
+        IEnumerator FlipAndStartShaking()
+        {
+            yield return Flip();
+
+            GetComponent<Shaker>().Play();
+        }
+
+        IEnumerator StopShakingAndFlip()
+        {
+            GetComponent<Shaker>().Stop();
+            while (GetComponent<Shaker>().IsPlaying())
+            {
+                yield return null;
+            }
+            yield return Flip();
+        }
+
         IEnumerator Flip()
         {
             float oldX = transform.localScale.x;
             // Flip out
-            yield return transform.DOScaleX(0, flipTime);
+            yield return transform.DOScaleX(0, flipTime).WaitForCompletion();
 
             Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
@@ -73,9 +106,43 @@ namespace Zoca.UI
                 ShowFront();
 
             // Flip in
-            yield return transform.DOScaleX(oldX, flipTime);
+            yield return transform.DOScaleX(oldX, flipTime).WaitForCompletion();
+        }
 
-            GetComponent<Shaker>().Play();
+        void Shake()
+        {
+            if (stopShaking)
+            {
+                stopShaking = false;
+                shaking = false;
+                return;
+            }
+
+
+            shakeDir *= -1;
+            transform.DOLocalRotate(new Vector3(0, 0, shakeDir * shakeAngle), shakeTime).SetLoops(2, LoopType.Yoyo).OnComplete(Shake);
+        }
+
+        public void StartShaking()
+        {
+            if (shaking)
+                return;
+
+            shaking = true;
+            shakeDir = 1;
+
+            Shake();
+
+        }
+
+        public void StopShaking()
+        {
+            stopShaking = true;
+        }
+
+        public bool IsShakingg()
+        {
+            return shaking;
         }
 
         public void SetCard(Card card)
@@ -88,41 +155,62 @@ namespace Zoca.UI
 
         public void ShowFront()
         {
-            
             image.sprite = frontSprite;
             image.enabled = true;
         }
 
         public void ShowBack()
         {
-            
             image.sprite = backSprite;
             image.enabled = true;
         }
 
         public bool IsFront()
         {
-            return image == frontSprite;
+            return image.sprite == frontSprite;
         }
+
+        
 
         public void Select()
         {
-            if (IsFront())
+            Interactor.SelectionEffect selectionEffect = GetComponentInParent<Interactor>().GetSelectionEffect();
+            switch (selectionEffect)
             {
-                GetComponent<Shaker>().Play();
+                case Interactor.SelectionEffect.Shake:
+                    GetComponent<Shaker>().Play();
+                    break;
+                case Interactor.SelectionEffect.Flip:
+                    StartCoroutine(Flip());
+                    break;
+                case Interactor.SelectionEffect.FlipAndShake:
+                    StartCoroutine(FlipAndStartShaking());
+                    break;
             }
-            else
-            {
-                // Flip card
-                StartCoroutine(Flip());
-            }
+
         }
 
         public void Unselect()
         {
-            GetComponent<Shaker>().Stop();
+            Interactor.SelectionEffect selectionEffect = GetComponentInParent<Interactor>().GetSelectionEffect();
+            switch (selectionEffect)
+            {
+                case Interactor.SelectionEffect.Shake:
+                    GetComponent<Shaker>().Stop();
+                    break;
+                case Interactor.SelectionEffect.Flip:
+                    StartCoroutine(Flip());
+                    break;
+                case Interactor.SelectionEffect.FlipAndShake:
+                    StartCoroutine(StopShakingAndFlip());
+                    break;
+            }
+
+          
         }
 
+
+        
 
     }
 

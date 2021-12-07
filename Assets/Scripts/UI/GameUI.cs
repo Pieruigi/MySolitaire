@@ -34,6 +34,16 @@ namespace Zoca.UI
         void Start()
         {
             interactable = true;
+
+            // Set custom selection effect for interactors
+            for(int i=0; i<interactors.Count; i++)
+            {
+                if(i==0)
+                    interactors[i].GetComponent<Interactor>().SetSelectionEffect(Interactor.SelectionEffect.Flip);
+                else
+                    interactors[i].GetComponent<Interactor>().SetSelectionEffect(Interactor.SelectionEffect.Shake);
+            }
+            
         }
 
         // Update is called once per frame

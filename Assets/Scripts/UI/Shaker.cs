@@ -14,6 +14,7 @@ namespace Zoca.UI
         float time = 0.25f;
 
         bool playing = false;
+        bool stopping = false;
         float dir = 1;
 
         // Start is called before the first frame update
@@ -30,8 +31,12 @@ namespace Zoca.UI
 
         void Shake()
         {
-            if (!playing)
+            if (stopping)
+            {
+                stopping = false;
+                playing = false;
                 return;
+            }
 
            
             dir *= -1;
@@ -54,7 +59,12 @@ namespace Zoca.UI
 
         public void Stop()
         {
-            playing = false;
+            stopping = true;
+        }
+
+        public bool IsPlaying()
+        {
+            return playing;
         }
     }
 
