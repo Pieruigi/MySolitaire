@@ -19,7 +19,10 @@ namespace Zoca.Logic
             }
         }
 
-       
+        public int AttemptsLeft
+        {
+            get { return attemptsLeft; }
+        }
         #endregion
 
 
@@ -34,6 +37,8 @@ namespace Zoca.Logic
         static Ruler instance = null;
 
         bool secondDeck = false;
+        int attemptsLeft = 3;
+
         #endregion
 
         #region private methods
@@ -50,10 +55,10 @@ namespace Zoca.Logic
             //piles[2].Add(new Card(4, 0));
             //piles[2].Add(new Card(3, 0));
             //piles[2].Add(new Card(2, 0));
-            for(int i=0; i<32; i++)
-            {
-                piles[0].RemoveLast();
-            }
+            //for (int i = 0; i < 32; i++)
+            //{
+            //    piles[0].RemoveLast();
+            //}
         }
 
         void InitPiles(List<Card> deck)
@@ -137,13 +142,19 @@ namespace Zoca.Logic
 
             bool ret = false;
             
+            if(sourceId == 0 && targetId == 1)
+            {
+                if (secondDeck)
+                    attemptsLeft--;
+            }
+
             switch (targetId)
             {
                 case 0:
                     // You can not move to the main pile
                     break;
                 case 1:
-                    // You can always move a card to the discard pile
+                    // You can always move one card to the discard pile
                     ret = true;
                     break;
                 case 2: // North
@@ -196,6 +207,11 @@ namespace Zoca.Logic
             return ret;
         }
 
+        public bool IsSecondDeck()
+        {
+            return secondDeck;
+        }
+
         public bool CheckFirstDeckCompleted()
         {
             
@@ -206,7 +222,7 @@ namespace Zoca.Logic
                     // Move from discard to main pile
                     for(int i= 0; i< piles[1].Count ; i++)
                     {
-                        piles[0].Add(piles[1].GetLast());
+                        piles[0].Add(piles[1].RemoveLast());
                     }
                     // Clear the discard pile
                     piles[1].Clear();

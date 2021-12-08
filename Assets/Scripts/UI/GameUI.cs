@@ -36,6 +36,7 @@ namespace Zoca.UI
         float gameSpeed = 1;
         #endregion
 
+        #region private methods
         private void Awake()
         {
             Ruler.Instance.DebugAll();
@@ -122,16 +123,32 @@ namespace Zoca.UI
             {
                 // If you picked the card from the main pile you must check if it was the last one; if so you
                 // need to move all the cards back from the discard pile to the main pile.
-                if (Ruler.Instance.CheckFirstDeckCompleted())
+                if (!Ruler.Instance.IsSecondDeck())
                 {
-                    StartCoroutine(MoveBackFromDiscardPile());
-                   
+                    if (Ruler.Instance.CheckFirstDeckCompleted())
+                    {
+                        StartCoroutine(MoveBackFromDiscardPile());
+                    }
+                    else
+                    {
+                        interactable = true;
+                    }
+                        
                 }
                 else
                 {
-                    interactable = true;
+                    if (Ruler.Instance.AttemptsLeft > 0)
+                        interactable = true;
+                    
                     
                 }
+                return;
+            }
+
+            // Avoid to move a complete pile to the discard pile 
+            if(targetId == 1)
+            {
+                interactable = true;
                 return;
             }
 
@@ -243,7 +260,9 @@ namespace Zoca.UI
             interactors[1] = discardInteractor;
             interactable = true;
         }
+        #endregion
 
+        #region public methods
         public int GetIndex(Interactor interactor)
         {
             return interactors.FindIndex(i => i == interactor);
@@ -255,7 +274,7 @@ namespace Zoca.UI
             if (!interactable)
                 return;
 
-            // You can only move card to the aces spot
+            // You can not move from the angles ( aces spots )
             if(selected == null)
             {
                 switch (GetIndex(target))
@@ -267,6 +286,10 @@ namespace Zoca.UI
                         return;
                 }
             }
+
+            // You can not select an empty card pile as first selection
+            if (selected == null && Ruler.Instance.GetCardPileAt(GetIndex(target)).IsEmpty())
+                return;
 
             // If the interactor is already selected and it's not the main pile you can unselect it
             if (selected == target)
@@ -303,9 +326,9 @@ namespace Zoca.UI
             target.Select();
         }
 
-       
 
-       
+        #endregion
+
 
 
     }
