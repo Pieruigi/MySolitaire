@@ -6,11 +6,21 @@ namespace Zoca.Logic
 {
     public class CardPile
     {
+        public int Count
+        {
+            get { return cards.Count; }
+        }
+
         List<Card> cards;
 
         public CardPile()
         {
             cards = new List<Card>();
+        }
+
+        public void Clear()
+        {
+            cards.Clear();
         }
 
         public bool IsEmpty()
@@ -26,6 +36,11 @@ namespace Zoca.Logic
         public Card GetLast()
         {
             return cards[cards.Count - 1];
+        }
+
+        public Card GetCardAt(int index)
+        {
+            return cards[index];
         }
 
         public Card RemoveLast()

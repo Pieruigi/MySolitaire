@@ -18,6 +18,8 @@ namespace Zoca.Logic
                 return instance;
             }
         }
+
+       
         #endregion
 
 
@@ -30,6 +32,8 @@ namespace Zoca.Logic
         List<CardPile> piles;
 
         static Ruler instance = null;
+
+        bool secondDeck = false;
         #endregion
 
         #region private methods
@@ -41,7 +45,15 @@ namespace Zoca.Logic
             InitPiles(deck);
 
             // Test
-
+            //piles[3].Add(new Card(1, 0));
+            //piles[2].RemoveLast();
+            //piles[2].Add(new Card(4, 0));
+            //piles[2].Add(new Card(3, 0));
+            //piles[2].Add(new Card(2, 0));
+            for(int i=0; i<32; i++)
+            {
+                piles[0].RemoveLast();
+            }
         }
 
         void InitPiles(List<Card> deck)
@@ -58,7 +70,7 @@ namespace Zoca.Logic
                     case 0: // The main pile, copy the deck
                         pile.AddRange(deck);
                         break;
-                    //case 2: // North
+                    case 2: // North
                     case 4: // East
                     case 6: // South
                     case 8: // West
@@ -184,6 +196,30 @@ namespace Zoca.Logic
             return ret;
         }
 
+        public bool CheckFirstDeckCompleted()
+        {
+            
+            if (piles[0].IsEmpty())
+            {
+                if (!secondDeck)
+                {
+                    // Move from discard to main pile
+                    for(int i= 0; i< piles[1].Count ; i++)
+                    {
+                        piles[0].Add(piles[1].GetLast());
+                    }
+                    // Clear the discard pile
+                    piles[1].Clear();
+                    secondDeck = true;
+                }
+                
+            }
+                
+            
+            return secondDeck;
+        }
+
+        
 
         public CardPile GetCardPileAt(int index)
         {
