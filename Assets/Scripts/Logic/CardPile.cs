@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Zoca.Logic
 {
+    [System.Serializable]
     public class CardPile
     {
         public int Count
@@ -11,6 +12,7 @@ namespace Zoca.Logic
             get { return cards.Count; }
         }
 
+        [SerializeField]
         List<Card> cards;
 
         public CardPile()
@@ -42,6 +44,7 @@ namespace Zoca.Logic
         {
             return cards[index];
         }
+
 
         public Card RemoveLast()
         {

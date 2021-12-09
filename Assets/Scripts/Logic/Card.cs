@@ -12,13 +12,16 @@ namespace  Zoca.Logic
     /// On french cards the wildcard has value = 0; the suit determines the wildcard color black or red ( not 
     /// the deck color, which is determined by the color field ).
     /// </summary>
+    //[System.Serializable]
     public class Card
     {
+        [SerializeField]
         public int Value
         {
             get { return value; }
         }
 
+        [SerializeField]
         public int Suit
         {
             get { return suit; }

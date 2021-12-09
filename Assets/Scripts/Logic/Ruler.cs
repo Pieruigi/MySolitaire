@@ -1,11 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Zoca.Logic
 {
+    public enum GameResult { Defeat, Victory, Draw }
+
+    //[System.Serializable]
     public class Ruler
     {
+        
+
+        public UnityAction<int> OnGameComplete;
+
         #region properties
 
         public static Ruler Instance
@@ -32,6 +40,7 @@ namespace Zoca.Logic
         /// <summary>
         /// Main, Discard, North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest
         /// </summary>
+        //[SerializeField] 
         List<CardPile> piles;
 
         static Ruler instance = null;
@@ -41,8 +50,9 @@ namespace Zoca.Logic
 
         #endregion
 
+        
         #region private methods
-        private Ruler()
+        protected Ruler()
         {
             // Create the deck
             List<Card> deck = CreateAndShuffleDeck();
@@ -55,7 +65,7 @@ namespace Zoca.Logic
             //piles[2].Add(new Card(4, 0));
             //piles[2].Add(new Card(3, 0));
             //piles[2].Add(new Card(2, 0));
-            //for (int i = 0; i < 32; i++)
+            //for (int i = 0; i < 28; i++)
             //{
             //    piles[0].RemoveLast();
             //}
@@ -64,11 +74,20 @@ namespace Zoca.Logic
         void InitPiles(List<Card> deck)
         {
             piles = new List<CardPile>();
+
+            //// Remove aces from deck
+            //List<Card> aces = deck.FindAll(c => c.Value == 1);
+            //foreach (Card c in aces)
+            //{
+            //    deck.Remove(c);
+            //}
+
             // Create all the piles
             for (int i = 0; i < 10; i++)
             {
                 CardPile pile = new CardPile();
                 piles.Add(pile);
+
 
                 switch (i)
                 {
@@ -83,6 +102,14 @@ namespace Zoca.Logic
                         Card card = piles[0].RemoveLast();
                         pile.Add(card);
                         break;
+                    //case 3:
+                    //case 5:
+                    //case 7:
+                    //case 9:
+                    //    Card ace = aces[0];
+                    //    aces.RemoveAt(0);
+                    //    pile.Add(ace);
+                    //    break;
                 }
             }
         }
@@ -118,11 +145,27 @@ namespace Zoca.Logic
             return ret;
         }
 
-        
+        bool YouWin()
+        {
+            int nextId = 3;
+            int step = 2;
+            for(int i=0; i<4; i++)
+            {
+                CardPile pile = piles[nextId];
+
+                if (pile.IsEmpty() || pile.Count < 10)
+                    return false;
+
+                nextId += step;
+            }
+
+            return true;
+        }
 
         #endregion
 
         #region public methods
+        
         /// <summary>
         /// Try to move the last card from the source pile to the target pile.
         /// </summary>
@@ -142,11 +185,11 @@ namespace Zoca.Logic
 
             bool ret = false;
             
-            if(sourceId == 0 && targetId == 1)
-            {
-                if (secondDeck)
-                    attemptsLeft--;
-            }
+            //if(sourceId == 0 && targetId == 1)
+            //{
+            //    if (secondDeck)
+            //        attemptsLeft--;
+            //}
 
             switch (targetId)
             {
@@ -202,8 +245,17 @@ namespace Zoca.Logic
             {
                 piles[targetId].Add(piles[sourceId].RemoveLast());
             }
-                
+
+            //if (secondDeck && attemptsLeft == 0)
+            //{
+            //    int result = YouWin() ? (int)GameResult.Victory : (int)GameResult.Defeat;
+
+            //    OnGameComplete?.Invoke(result);
+            //}
             
+            if(YouWin())
+                OnGameComplete?.Invoke((int)GameResult.Victory);
+
             return ret;
         }
 
@@ -220,12 +272,13 @@ namespace Zoca.Logic
                 if (!secondDeck)
                 {
                     // Move from discard to main pile
-                    for(int i= 0; i< piles[1].Count ; i++)
+                    int count = piles[1].Count;
+                    for (int i= 0; i< count ; i++)
                     {
                         piles[0].Add(piles[1].RemoveLast());
                     }
                     // Clear the discard pile
-                    piles[1].Clear();
+                    
                     secondDeck = true;
                 }
                 

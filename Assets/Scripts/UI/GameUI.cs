@@ -26,8 +26,11 @@ namespace Zoca.UI
         [SerializeField]
         List<Transform> interactorsPivots;
 
-        [SerializeField]
+        //[SerializeField]
         List<Interactor> interactors;
+
+        //[SerializeField]
+        Ruler ruler;
 
         Interactor selected = null;
         bool interactable = false;
@@ -39,7 +42,9 @@ namespace Zoca.UI
         #region private methods
         private void Awake()
         {
+            ruler = Ruler.Instance;
             Ruler.Instance.DebugAll();
+            Ruler.Instance.OnGameComplete += HandleOnGameComplete;
         }
 
         // Start is called before the first frame update
@@ -60,6 +65,11 @@ namespace Zoca.UI
         void Update()
         {
 
+        }
+
+        void HandleOnGameComplete(int gameResult)
+        {
+            interactable = false;
         }
 
         bool TryMove(Interactor sourceInteractor, Interactor targetInteractor)
@@ -206,8 +216,12 @@ namespace Zoca.UI
         IEnumerator MoveBackFromDiscardPile()
         {
             yield return new WaitForSeconds(1 / gameSpeed);
+
+           
+
             // How many cards we need to animate ?
-            int count = Ruler.Instance.GetCardPileAt(0).Count;
+            int count = 0;
+            int totalCards = Ruler.Instance.GetCardPileAt(0).Count;
 
             // Destroy the interactor in the main pile
             Destroy(interactors[0].gameObject);
@@ -219,12 +233,12 @@ namespace Zoca.UI
             {
                 // Create an interactor under the source interactor if there are at least 2 cards to move
                 Interactor nextInteractor = null;
-                if (count > 1)
+                if (count <= totalCards - 2)
                 {
                     nextInteractor = Instantiate(interactorPrefab, interactorsPivots[1], false).GetComponent<Interactor>();
                     // Move back in the hierarchy
                     (nextInteractor.transform as RectTransform).SetAsFirstSibling();
-                    nextInteractor.SetCard(Ruler.Instance.GetCardPileAt(0).GetCardAt(count-2));
+                    nextInteractor.SetCard(Ruler.Instance.GetCardPileAt(0).GetCardAt(count+1));
                     nextInteractor.ShowFront();
                     Debug.Log("New card created:" + nextInteractor);
                 }
@@ -241,7 +255,7 @@ namespace Zoca.UI
                 // Wait
                 yield return new WaitForSeconds(moveTime);
                 // Next
-                count--;
+                count++;
                 if (nextInteractor)
                 {
                     Destroy(sourceInteractor.gameObject, moveTime * gameSpeed);

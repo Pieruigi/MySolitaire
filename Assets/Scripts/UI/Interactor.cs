@@ -18,6 +18,7 @@ namespace Zoca.UI
 
         #region private fields
 
+        //[SerializeField]
         Card card;
         GameUI gameUI;
         GameObject cardObject; // The card to show
