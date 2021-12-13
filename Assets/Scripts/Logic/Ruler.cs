@@ -197,8 +197,9 @@ namespace Zoca.Logic
                     // You can not move to the main pile
                     break;
                 case 1:
-                    // You can always move one card to the discard pile
-                    ret = true;
+                    // You can move on the discard pile only from the deck
+                    if(sourceId == 0)
+                        ret = true;
                     break;
                 case 2: // North
                 case 4: // East
