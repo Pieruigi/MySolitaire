@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Zoca.Logic;
+using Zoca.Management;
 
 namespace Zoca.UI
 {
@@ -45,11 +46,15 @@ namespace Zoca.UI
             ruler = Ruler.Instance;
             Ruler.Instance.DebugAll();
             Ruler.Instance.OnGameComplete += HandleOnGameComplete;
+
         }
 
         // Start is called before the first frame update
         void Start()
         {
+            // Setting time scale 
+            Time.timeScale = SettingsManager.Instance.GameSpeed;
+
             interactable = true;
             interactors = new List<Interactor>();
             // Create interactors
@@ -58,6 +63,7 @@ namespace Zoca.UI
                 interactors.Add(CreateInteractor(i));
             }
 
+            
             
         }
 
@@ -89,7 +95,7 @@ namespace Zoca.UI
                 // avoid the card to flip when unselected
                 if (sourceId == 0)
                 {
-                    selected.SetSelectionEffect(Interactor.SelectionEffect.Shake);
+                    selected.SetSelectionEffect(Interactor.SelectionEffect.Pulse);
                 }
 
                 Debug.LogFormat("GameUI - Card can be moved.");
@@ -203,11 +209,11 @@ namespace Zoca.UI
             // Effect and visibility
             if (index == 0)
             {
-                interactor.SetSelectionEffect(Interactor.SelectionEffect.FlipAndShake);
+                interactor.SetSelectionEffect(Interactor.SelectionEffect.FlipAndPulse);
             }
             else
             {
-                interactor.SetSelectionEffect(Interactor.SelectionEffect.Shake);
+                interactor.SetSelectionEffect(Interactor.SelectionEffect.Pulse);
             }
 
             return interactor;
@@ -264,7 +270,7 @@ namespace Zoca.UI
                 }
                 else
                 {
-                    sourceInteractor.SetSelectionEffect(Interactor.SelectionEffect.FlipAndShake);
+                    sourceInteractor.SetSelectionEffect(Interactor.SelectionEffect.FlipAndPulse);
                     sourceInteractor = null;
                 }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Zoca.Logic;
+using Zoca.Management;
 
 namespace Zoca.UI
 {
@@ -19,6 +20,12 @@ namespace Zoca.UI
 
         [SerializeField]
         float shakeTime = 0.25f;
+        
+        [SerializeField]
+        float pulseForce = 1.2f;
+
+        [SerializeField]
+        float pulseTime = 0.25f;
         #endregion
 
         #region private fields
@@ -34,6 +41,11 @@ namespace Zoca.UI
         bool shaking = false;
         bool stopShaking = false;
         float shakeDir = 1;
+
+        // Pulsing field
+        bool pulsing = false;
+        bool stopPulsing = false;
+        
         #endregion
 
         #region private methods
@@ -91,9 +103,31 @@ namespace Zoca.UI
             shakeDir *= -1;
             transform.DOLocalRotate(new Vector3(0, 0, shakeDir * shakeAngle), shakeTime).SetLoops(2, LoopType.Yoyo).OnComplete(Shake);
         }
+
+        void Pulse()
+        {
+            if (stopPulsing)
+            {
+                stopPulsing = false;
+                pulsing = false;
+                return;
+            }
+
+            transform.DOScale(new Vector3(pulseForce, pulseForce, 1), pulseTime).SetLoops(2, LoopType.Yoyo).OnComplete(Pulse);
+        }
         #endregion
 
         #region public methods
+        public void StartPulsing()
+        {
+            if (pulsing)
+                return;
+
+            pulsing = true;
+
+            Pulse();
+        }
+
         public void StartShaking()
         {
             if (shaking)
@@ -111,9 +145,19 @@ namespace Zoca.UI
             stopShaking = true;
         }
 
+        public void StopPulsing()
+        {
+            stopPulsing = true;
+        }
+
         public bool IsShaking()
         {
             return shaking;
+        }
+
+        public bool IsPulsing()
+        {
+            return pulsing;
         }
 
         public void SetCard(Card card)
@@ -170,10 +214,27 @@ namespace Zoca.UI
             StartShaking();
         }
 
+        public IEnumerator FlipAndStartPulsing()
+        {
+            yield return Flip();
+
+            StartPulsing();
+        }
+
         public IEnumerator StopShakingAndFlip()
         {
             StopShaking();
             while (IsShaking())
+            {
+                yield return null;
+            }
+            yield return Flip();
+        }
+
+        public IEnumerator StopPulsingAndFlip()
+        {
+            StopPulsing();
+            while (IsPulsing())
             {
                 yield return null;
             }

@@ -27,6 +27,12 @@ namespace Zoca.Logic
             }
         }
 
+        public static void Destroy()
+        {
+            if (instance != null)
+                instance = null;
+        }
+
         public int AttemptsLeft
         {
             get { return attemptsLeft; }

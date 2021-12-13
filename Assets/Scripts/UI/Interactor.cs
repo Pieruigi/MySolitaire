@@ -13,7 +13,7 @@ namespace Zoca.UI
     /// </summary>
     public class Interactor : MonoBehaviour, IPointerDownHandler
     {
-        public enum SelectionEffect { None, Shake, Flip, FlipAndShake }
+        public enum SelectionEffect { None, Shake, Flip, FlipAndShake , Pulse, FlipAndPulse  }
 
 
         #region private fields
@@ -104,6 +104,12 @@ namespace Zoca.UI
                     case Interactor.SelectionEffect.FlipAndShake:
                         StartCoroutine(cardUI.FlipAndStartShaking());
                         break;
+                    case Interactor.SelectionEffect.Pulse:
+                        cardUI.StartPulsing();
+                        break;
+                    case Interactor.SelectionEffect.FlipAndPulse:
+                        StartCoroutine(cardUI.FlipAndStartPulsing());
+                        break;
                 }
             }
             
@@ -125,6 +131,12 @@ namespace Zoca.UI
                         break;
                     case Interactor.SelectionEffect.FlipAndShake:
                         StartCoroutine(cardUI.StopShakingAndFlip());
+                        break;
+                    case Interactor.SelectionEffect.Pulse:
+                        cardUI.StopPulsing();
+                        break;
+                    case Interactor.SelectionEffect.FlipAndPulse:
+                        StartCoroutine(cardUI.StopPulsingAndFlip());
                         break;
                 }
             }
