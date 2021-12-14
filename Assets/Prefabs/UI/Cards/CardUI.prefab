@@ -92,4 +92,4 @@ MonoBehaviour:
   shakeAngle: 20
   shakeTime: 0.1
   pulseForce: 1.2
-  pulseTime: 0.125
+  pulseTime: 0.25
