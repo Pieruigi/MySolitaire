@@ -15,9 +15,12 @@ namespace Zoca.Management
         public float GameSpeed
         {
             get { return gameSpeed; }
-            set { SetGameSpeed(value); }
         }
 
+        public int Difficulty
+        {
+            get { return difficulty; }
+        }
         #endregion
 
         #region private fields
@@ -36,7 +39,13 @@ namespace Zoca.Management
         // Audio
         float masterVolume = 0;
         string masterVolumeParamName = "MasterVolume";
-        
+
+        /// <summary>
+        /// Not mandatory, just if you want to add some difficulty levels.
+        /// 0 to N, from easy to hard
+        /// </summary>
+        int difficulty = 1;
+        string difficultyParamName = "Difficulty";
         #endregion
 
         #region private methods
@@ -46,12 +55,14 @@ namespace Zoca.Management
             {
                 Instance = this;
 
-                // Get game speed from player prefs
-                if (PlayerPrefs.HasKey(gameSpeedParamName))
-                    SetGameSpeed(PlayerPrefs.GetFloat(gameSpeedParamName));
-                else
-                    SetGameSpeed(gameSpeedNormal);
+                // Init game speed
+                InitGameSpeed();
 
+                // Init audio
+                InitMasterVolume();
+
+                // Difficulty
+                InitDifficulty();
 
                 saveEnabled = true;
 
@@ -64,7 +75,42 @@ namespace Zoca.Management
             
         }
 
-        void SetGameSpeed(float gameSpeed)
+        private void Start()
+        {
+            // You can't set mixer parameters in the awake, so you need to do it here
+            float mv = masterVolume;
+            if(audioMixer.GetFloat(masterVolumeParamName, out mv) && masterVolume != mv)
+            {
+                audioMixer.SetFloat(masterVolumeParamName, masterVolume);
+            }
+            
+        }
+
+        void InitGameSpeed()
+        {
+            if (PlayerPrefs.HasKey(gameSpeedParamName))
+                InternalSetGameSpeed(PlayerPrefs.GetFloat(gameSpeedParamName));
+            else
+                InternalSetGameSpeed(gameSpeedNormal);
+        }
+
+        void InitMasterVolume()
+        {
+            if (PlayerPrefs.HasKey(masterVolumeParamName))
+                InternalSetMasterVolume(PlayerPrefs.GetFloat(masterVolumeParamName));
+            else
+                InternalSetMasterVolume(0);
+        }
+
+        void InitDifficulty()
+        {
+            if (PlayerPrefs.HasKey(difficultyParamName))
+                InternalSetDifficulty(PlayerPrefs.GetInt(difficultyParamName));
+            else
+                InternalSetDifficulty(difficulty);
+        }
+
+        void InternalSetGameSpeed(float gameSpeed)
         {
             // Set value and timescale
             this.gameSpeed = gameSpeed;
@@ -77,7 +123,7 @@ namespace Zoca.Management
                 
         }
 
-        void SetMasterVolume(float masterVolume)
+        void InternalSetMasterVolume(float masterVolume)
         {
             this.masterVolume = masterVolume;
             // Set mixer
@@ -90,17 +136,28 @@ namespace Zoca.Management
             }
         }
 
+        void InternalSetDifficulty(int difficulty)
+        {
+            this.difficulty = difficulty;
+
+            if (saveEnabled)
+            {
+                PlayerPrefs.SetInt(difficultyParamName, difficulty);
+                PlayerPrefs.Save();
+            }
+        }
+
         #endregion
 
         #region public methods
-        public void SetNormalGameSpeed()
+        public void SetGameSpeedNormal()
         {
-            SetGameSpeed(gameSpeedNormal);
+            InternalSetGameSpeed(gameSpeedNormal);
         }
 
-        public void SetFastGameSpeed()
+        public void SetGameSpeedFast()
         {
-            SetGameSpeed(gameSpeedFast);
+            InternalSetGameSpeed(gameSpeedFast);
         }
 
         public bool IsGameSpeedFast()
@@ -110,18 +167,24 @@ namespace Zoca.Management
 
         public void SetMasterVolumeOn()
         {
-            masterVolume = 0;
+            InternalSetMasterVolume(0);
         }
 
         public void SetMasterVolumeOff()
         {
-            masterVolume = -80;
+            InternalSetMasterVolume(-80);
         }
 
         public bool IsMasterVolumeOn()
         {
             return masterVolume == 0;
         }
+
+        public void SetDifficulty(int difficulty)
+        {
+            InternalSetDifficulty(difficulty);
+        }
+
         #endregion
     }
 

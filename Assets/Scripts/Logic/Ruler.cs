@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Zoca.Management;
 
 namespace Zoca.Logic
 {
@@ -52,7 +53,7 @@ namespace Zoca.Logic
         static Ruler instance = null;
 
         bool secondDeck = false;
-        int attemptsLeft = 3;
+        int attemptsLeft = -1;
 
         #endregion
 
@@ -71,7 +72,7 @@ namespace Zoca.Logic
             //piles[2].Add(new Card(4, 0));
             //piles[2].Add(new Card(3, 0));
             //piles[2].Add(new Card(2, 0));
-            //for (int i = 0; i < 28; i++)
+            //for (int i = 0; i < 32; i++)
             //{
             //    piles[0].RemoveLast();
             //}
@@ -190,12 +191,14 @@ namespace Zoca.Logic
                 return false;
 
             bool ret = false;
-            
-            //if(sourceId == 0 && targetId == 1)
-            //{
-            //    if (secondDeck)
-            //        attemptsLeft--;
-            //}
+
+            // Decrease the number of left attempts when you are playing the second deck and moving from the
+            // main pile to the discard pile
+            if (sourceId == 0 && targetId == 1)
+            {
+                if (secondDeck && attemptsLeft > 0)
+                    attemptsLeft--;
+            }
 
             switch (targetId)
             {
@@ -261,15 +264,22 @@ namespace Zoca.Logic
                 piles[targetId].Add(piles[sourceId].RemoveLast());
             }
 
-            //if (secondDeck && attemptsLeft == 0)
-            //{
-            //    int result = YouWin() ? (int)GameResult.Victory : (int)GameResult.Defeat;
-
-            //    OnGameComplete?.Invoke(result);
-            //}
-            
-            if(YouWin())
+        
+            if (YouWin())
+            {
+                // You win the game
                 OnGameComplete?.Invoke((int)GameResult.Victory);
+            }
+            else
+            {
+                // We must check if you lose or not
+                if(secondDeck && attemptsLeft == 0)
+                {
+                    OnGameComplete?.Invoke((int)GameResult.Defeat);
+                }
+            }
+
+           
 
             return ret;
         }
@@ -295,6 +305,20 @@ namespace Zoca.Logic
                     // Clear the discard pile
                     
                     secondDeck = true;
+
+                    // Set the attempt left depending on the game diffcult
+                    switch (SettingsManager.Instance.Difficulty)
+                    {
+                        case 0:
+                            attemptsLeft = 9;
+                            break;
+                        case 1:
+                            attemptsLeft = 6;
+                            break;
+                        case 2:
+                            attemptsLeft = 3;
+                            break;
+                    }
                 }
                 
             }
