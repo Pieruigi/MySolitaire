@@ -31,7 +31,7 @@ namespace Zoca.UI
         List<Interactor> interactors;
 
         //[SerializeField]
-        Ruler ruler;
+        //Ruler ruler;
 
         Interactor selected = null;
         bool interactable = false;
@@ -43,9 +43,9 @@ namespace Zoca.UI
         #region private methods
         private void Awake()
         {
-            ruler = Ruler.Instance;
-            Ruler.Instance.DebugAll();
-            Ruler.Instance.OnGameComplete += HandleOnGameComplete;
+            //ruler = Ruler.Instance;
+            //Ruler.Instance.DebugAll();
+            //Ruler.Instance.OnGameComplete += HandleOnGameComplete;
 
         }
 
@@ -54,6 +54,8 @@ namespace Zoca.UI
         {
             // Setting time scale 
             Time.timeScale = SettingsManager.Instance.GameSpeed;
+
+            Ruler.Instance.OnGameComplete += HandleOnGameComplete;
 
             interactable = true;
             interactors = new List<Interactor>();

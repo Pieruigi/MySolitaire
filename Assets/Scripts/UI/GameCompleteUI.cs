@@ -16,14 +16,14 @@ namespace Zoca.UI
 
         private void Awake()
         {
-            Ruler.Instance.OnGameComplete += HandleOnGameComplete;
-            panel.SetActive(false);
+            
         }
 
         // Start is called before the first frame update
         void Start()
         {
-
+            Ruler.Instance.OnGameComplete += HandleOnGameComplete;
+            panel.SetActive(false);
         }
 
         // Update is called once per frame

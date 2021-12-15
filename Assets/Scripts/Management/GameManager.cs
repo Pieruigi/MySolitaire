@@ -71,7 +71,7 @@ namespace Zoca.Management
         public void LoadSceneById(int id)
         {
             
-            Ruler.Destroy();
+            //Ruler.Destroy();
 
             SceneManager.LoadScene(id);
 

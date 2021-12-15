@@ -9,7 +9,7 @@ namespace Zoca.Logic
     public enum GameResult { Defeat, Victory, Draw }
 
     //[System.Serializable]
-    public class Ruler
+    public class Ruler: MonoBehaviour
     {
         
 
@@ -17,22 +17,14 @@ namespace Zoca.Logic
 
         #region properties
 
-        public static Ruler Instance
-        {
-            get 
-            {
-                if (instance == null)
-                    instance = new Ruler();
+        public static Ruler Instance { get; private set; }
+        
 
-                return instance;
-            }
-        }
-
-        public static void Destroy()
-        {
-            if (instance != null)
-                instance = null;
-        }
+        //public static void Destroy()
+        //{
+        //    if (instance != null)
+        //        instance = null;
+        //}
 
         public int AttemptsLeft
         {
@@ -50,7 +42,7 @@ namespace Zoca.Logic
         //[SerializeField] 
         List<CardPile> piles;
 
-        static Ruler instance = null;
+
 
         bool secondDeck = false;
         int attemptsLeft = -1;
@@ -59,23 +51,32 @@ namespace Zoca.Logic
 
         
         #region private methods
-        protected Ruler()
+        protected void Awake()
         {
-            // Create the deck
-            List<Card> deck = CreateAndShuffleDeck();
+            if (!Instance)
+            {
+                Instance = this;
+                // Create the deck
+                List<Card> deck = CreateAndShuffleDeck();
 
-            InitPiles(deck);
+                InitPiles(deck);
+                // Test
+                //piles[3].Add(new Card(1, 0));
+                //piles[2].RemoveLast();
+                //piles[2].Add(new Card(4, 0));
+                //piles[2].Add(new Card(3, 0));
+                //piles[2].Add(new Card(2, 0));
+                //for (int i = 0; i < 32; i++)
+                //{
+                //    piles[0].RemoveLast();
+                //}
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
 
-            // Test
-            //piles[3].Add(new Card(1, 0));
-            //piles[2].RemoveLast();
-            //piles[2].Add(new Card(4, 0));
-            //piles[2].Add(new Card(3, 0));
-            //piles[2].Add(new Card(2, 0));
-            //for (int i = 0; i < 32; i++)
-            //{
-            //    piles[0].RemoveLast();
-            //}
+
         }
 
         void InitPiles(List<Card> deck)
@@ -214,7 +215,7 @@ namespace Zoca.Logic
                     else
                     {
                         if (piles[sourceId].GetLast().Suit == piles[targetId].GetLast().Suit &&
-                           piles[sourceId].GetLast().Value == piles[targetId].GetLast().Value + 1)
+                           piles[sourceId].GetLast().Value == piles[targetId].GetLast().Value - 1)
                             ret = true;
                     }
                     break;
