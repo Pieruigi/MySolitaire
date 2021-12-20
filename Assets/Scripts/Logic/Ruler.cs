@@ -14,6 +14,7 @@ namespace Zoca.Logic
         
 
         public UnityAction<int> OnGameComplete;
+        public UnityAction<int> OnAttemptsLeftChanged;
 
         #region properties
 
@@ -195,10 +196,14 @@ namespace Zoca.Logic
 
             // Decrease the number of left attempts when you are playing the second deck and moving from the
             // main pile to the discard pile
-            if (sourceId == 0 && targetId == 1)
+            int oldAttemptsLeft = attemptsLeft;
+            if (sourceId == 0 && targetId == 1 && !GetCardPileAt(targetId).IsEmpty())
             {
                 if (secondDeck && attemptsLeft > 0)
+                {
                     attemptsLeft--;
+                }
+                    
             }
 
             switch (targetId)
@@ -277,10 +282,21 @@ namespace Zoca.Logic
             else
             {
                 // We must check if you lose or not
-                if(secondDeck && attemptsLeft == 0)
+                if(secondDeck)
                 {
-                    OnGameComplete?.Invoke((int)GameResult.Defeat);
+                    if (attemptsLeft == 0)
+                    {
+                        OnGameComplete?.Invoke((int)GameResult.Defeat);
+                    }
+                    else
+                    {
+                        if(oldAttemptsLeft != attemptsLeft)
+                        {
+                            OnAttemptsLeftChanged(attemptsLeft);
+                        }
+                    }
                 }
+                
             }
 
            
