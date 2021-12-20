@@ -207,17 +207,20 @@ namespace Zoca.Logic
                     // You can not move to the main pile
                     break;
                 case 1:
-                    // You can always move on the discard pile from the deck...
-                    if(sourceId == 0)
-                    {
+                    
+                    if (sourceId == 0)
                         ret = true;
-                    }
-                    else
-                    {
-                        if (piles[sourceId].GetLast().Suit == piles[targetId].GetLast().Suit &&
-                           piles[sourceId].GetLast().Value == piles[targetId].GetLast().Value - 1)
-                            ret = true;
-                    }
+                    //// You can always move on the discard pile from the deck...
+                    //if(sourceId == 0)
+                    //{
+                    //    ret = true;
+                    //}
+                    //else
+                    //{
+                    //    if (piles[sourceId].GetLast().Suit == piles[targetId].GetLast().Suit &&
+                    //       piles[sourceId].GetLast().Value == piles[targetId].GetLast().Value - 1)
+                    //        ret = true;
+                    //}
                     break;
                 case 2: // North
                 case 4: // East

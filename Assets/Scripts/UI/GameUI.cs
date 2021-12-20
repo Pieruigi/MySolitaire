@@ -257,6 +257,7 @@ namespace Zoca.UI
                 sourceInteractor.transform.parent = interactorsPivots[0];
                 sourceInteractor.SetSelectionEffect(Interactor.SelectionEffect.Flip);
                 sourceInteractor.Unselect();
+                (sourceInteractor.transform as RectTransform).SetAsLastSibling(); // Move ahead
                 //sourceInteractor.SetSelectionEffect(Interactor.SelectionEffect.FlipAndShake);
                 sourceInteractor.transform.DOMove(interactorsPivots[0].position, moveTime * gameSpeed, true);
                 // If there another card to move then set the next step
@@ -308,6 +309,18 @@ namespace Zoca.UI
                         return;
                 }
             }
+
+            // You can not select from deck if the discard pile is not empty and one of the other piles
+            // is empty.
+            if (selected == null && GetIndex(target) == 0 && !Ruler.Instance.GetCardPileAt(1).IsEmpty() &&
+                (
+                Ruler.Instance.GetCardPileAt(2).IsEmpty() ||
+                Ruler.Instance.GetCardPileAt(4).IsEmpty() ||
+                Ruler.Instance.GetCardPileAt(6).IsEmpty() ||
+                Ruler.Instance.GetCardPileAt(8).IsEmpty()
+                ))
+
+                return;
 
             // You can not select an empty card pile as first selection
             if (selected == null && Ruler.Instance.GetCardPileAt(GetIndex(target)).IsEmpty())
