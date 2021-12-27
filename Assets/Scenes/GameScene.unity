@@ -615,22 +615,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4844235816258174834, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4844235816258174834, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4844235816258174834, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4844235816258174834, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -745
-      objectReference: {fileID: 0}
     - target: {fileID: 4844235817280131359, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
       propertyPath: m_Name
       value: GameUI

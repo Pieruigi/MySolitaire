@@ -27,6 +27,9 @@ namespace Zoca.UI
         [SerializeField]
         List<Transform> interactorsPivots;
 
+        [SerializeField]
+        Button refreshDeckButton;
+
         //[SerializeField]
         List<Interactor> interactors;
 
@@ -56,6 +59,11 @@ namespace Zoca.UI
             Time.timeScale = SettingsManager.Instance.GameSpeed;
 
             Ruler.Instance.OnGameComplete += HandleOnGameComplete;
+            Ruler.Instance.OnFirstDeckCompleted += HandleOnFirstDeckCompleted;
+
+            // Set button listener
+            refreshDeckButton.onClick.AddListener(RefreshDeck);
+            refreshDeckButton.gameObject.SetActive(false);
 
             interactable = true;
             interactors = new List<Interactor>();
@@ -73,6 +81,25 @@ namespace Zoca.UI
         void Update()
         {
 
+        }
+
+        void HandleOnFirstDeckCompleted()
+        {
+            Debug.Log("OnFirstDeckCompleted");
+            if (refreshDeckButton.gameObject.activeSelf)
+                return;
+
+            refreshDeckButton.gameObject.SetActive(true);
+            interactable = false;
+           
+        }
+
+        void RefreshDeck()
+        {
+            refreshDeckButton.gameObject.SetActive(false);
+
+            Ruler.Instance.RefreshDeck();
+            StartCoroutine(MoveBackFromDiscardPile());
         }
 
         void HandleOnGameComplete(int gameResult)
@@ -143,14 +170,14 @@ namespace Zoca.UI
                 // need to move all the cards back from the discard pile to the main pile.
                 if (!Ruler.Instance.IsSecondDeck())
                 {
-                    if (Ruler.Instance.CheckFirstDeckCompleted())
-                    {
-                        StartCoroutine(MoveBackFromDiscardPile());
-                    }
-                    else
-                    {
+                    //if (Ruler.Instance.CheckFirstDeckCompleted())
+                    //{
+                    //    StartCoroutine(MoveBackFromDiscardPile());
+                    //}
+                    //else
+                    //{
                         interactable = true;
-                    }
+                    //}
                         
                 }
                 else

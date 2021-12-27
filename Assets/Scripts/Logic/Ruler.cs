@@ -15,6 +15,7 @@ namespace Zoca.Logic
 
         public UnityAction<int> OnGameComplete;
         public UnityAction<int> OnAttemptsLeftChanged;
+        public UnityAction OnFirstDeckCompleted;
 
         #region properties
 
@@ -299,7 +300,11 @@ namespace Zoca.Logic
                 
             }
 
-           
+            // Check for first deck
+            if(piles[0].IsEmpty() && !secondDeck)
+            {
+                OnFirstDeckCompleted?.Invoke();
+            }
 
             return ret;
         }
@@ -309,7 +314,8 @@ namespace Zoca.Logic
             return secondDeck;
         }
 
-        public bool CheckFirstDeckCompleted()
+
+        public bool RefreshDeck()
         {
             
             if (piles[0].IsEmpty())
