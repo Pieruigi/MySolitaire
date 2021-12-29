@@ -14,14 +14,18 @@ namespace Zoca.UI
         [SerializeField]
         GameObject panel;
 
+        [SerializeField]
+        SpriteAnimator winnerFx;
+
         private void Awake()
         {
-            
+            winnerFx.OnStop += ()=> { winnerFx.gameObject.SetActive(false); };
         }
 
         // Start is called before the first frame update
         void Start()
         {
+            
             Ruler.Instance.OnGameComplete += HandleOnGameComplete;
             panel.SetActive(false);
         }
@@ -41,6 +45,7 @@ namespace Zoca.UI
                     break;
                 case GameResult.Victory:
                     messageField.text = "You Win";
+                    winnerFx.Play();
                     break;
                 case GameResult.Draw:
                     messageField.text = "You Draw";
@@ -49,6 +54,8 @@ namespace Zoca.UI
 
             panel.SetActive(true) ;
         }
+
+        
     }
 
 }
