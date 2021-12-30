@@ -8,6 +8,7 @@ namespace Zoca.UI
 {
     public class ButtonPlay : MonoBehaviour
     {
+        bool loading = false;
 
         private void Awake()
         {
@@ -28,8 +29,18 @@ namespace Zoca.UI
 
         void Play()
         {
-            GameManager.Instance.LoadSceneById(GameManager.GameSceneId);
+            if (loading)
+                return;
+            loading = true;
 
+            StartCoroutine(LoadGameScene());
+        }
+
+        IEnumerator LoadGameScene()
+        {
+            yield return new WaitForSeconds(0.5f);
+            
+            GameManager.Instance.LoadSceneById(GameManager.GameSceneId);
         }
     }
 

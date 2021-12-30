@@ -30,8 +30,19 @@ namespace Zoca.UI
         [SerializeField]
         Button refreshDeckButton;
 
+        [SerializeField]
+        AudioSource interactionAudioSource;
+
+        [SerializeField]
+        AudioSource interactionFailedAudioSource;
+
+        [SerializeField]
+        AudioSource refreshDeckAudioSource;
+
         //[SerializeField]
         List<Interactor> interactors;
+
+
 
         //[SerializeField]
         //Ruler ruler;
@@ -41,6 +52,7 @@ namespace Zoca.UI
         float moveTime = .2f;
         GameObject toDestroy;
         float gameSpeed = 1;
+        bool refreshingDeck = false;
         #endregion
 
         #region private methods
@@ -96,10 +108,22 @@ namespace Zoca.UI
 
         void RefreshDeck()
         {
-            refreshDeckButton.gameObject.SetActive(false);
+            if (refreshingDeck)
+                return;
+            refreshingDeck = true;
+
+            StartCoroutine(HideRefreshButton());
 
             Ruler.Instance.RefreshDeck();
             StartCoroutine(MoveBackFromDiscardPile());
+
+            
+        }
+
+        IEnumerator HideRefreshButton()
+        {
+            yield return new WaitForSeconds(0.5f);
+            refreshDeckButton.gameObject.SetActive(false);
         }
 
         void HandleOnGameComplete(int gameResult)
@@ -250,9 +274,8 @@ namespace Zoca.UI
 
         IEnumerator MoveBackFromDiscardPile()
         {
-            yield return new WaitForSeconds(1 / gameSpeed);
-
-           
+            yield return new WaitForSeconds(0.5f / gameSpeed);
+            refreshDeckAudioSource.Play();           
 
             // How many cards we need to animate ?
             int count = 0;
@@ -322,7 +345,11 @@ namespace Zoca.UI
         {
             Debug.LogFormat("[GameUI ClickingOn:{0}", target);
             if (!interactable)
+            {
+                interactionFailedAudioSource.Play();
                 return;
+            }
+                
 
             // You can not move from the angles ( aces spots )
             if(selected == null)
@@ -333,6 +360,7 @@ namespace Zoca.UI
                     case 5:
                     case 7:
                     case 9:
+                        interactionFailedAudioSource.Play();
                         return;
                 }
             }
@@ -346,12 +374,19 @@ namespace Zoca.UI
                 Ruler.Instance.GetCardPileAt(6).IsEmpty() ||
                 Ruler.Instance.GetCardPileAt(8).IsEmpty()
                 ))
-
+            {
+                interactionFailedAudioSource.Play();
                 return;
+            }
+                
 
             // You can not select an empty card pile as first selection
             if (selected == null && Ruler.Instance.GetCardPileAt(GetIndex(target)).IsEmpty())
+            {
+                interactionFailedAudioSource.Play();
                 return;
+            }
+                
 
             // If the interactor is already selected and it's not the main pile you can unselect it
             if (selected == target)
@@ -359,13 +394,14 @@ namespace Zoca.UI
                 // You can not unselect the main pile
                 if(GetIndex(target) != 0) 
                 {
+                    interactionAudioSource.Play();
                     selected.Unselect();
                     selected = null;
                 }
                 return;
             }
 
-            Debug.LogFormat("[GameUI ClickingOn - BBBBBBBBBBBBBBBB:{0}", target);
+            
             // If there is another interactor selected you must check if you can move the selected card
             // ( or cards ) on the new pile
             if (selected != null && selected != target)
@@ -376,14 +412,20 @@ namespace Zoca.UI
 
                 if(TryMove(sourceInteractor, targetInteractor))
                 {
+                    interactionAudioSource.Play();
                     selected.Unselect();
                     selected = null;
                 }
-                
+                else
+                {
+                    interactionFailedAudioSource.Play();
+                }
+
                // Ruler.Instance.DebugAll();
                 return;
             }
 
+            interactionAudioSource.Play();
             selected = target;
             target.Select();
         }

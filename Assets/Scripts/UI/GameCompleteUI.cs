@@ -17,9 +17,12 @@ namespace Zoca.UI
         [SerializeField]
         SpriteAnimator winnerFx;
 
+        [SerializeField]
+        AudioSource winnerAudioSource;
+
         private void Awake()
         {
-            winnerFx.OnStop += ()=> { winnerFx.gameObject.SetActive(false); };
+            //winnerFx.OnStop += ()=> { winnerFx.gameObject.SetActive(false); };
         }
 
         // Start is called before the first frame update
@@ -46,6 +49,7 @@ namespace Zoca.UI
                 case GameResult.Victory:
                     messageField.text = "You Win";
                     winnerFx.Play();
+                    winnerAudioSource.Play();
                     break;
                 case GameResult.Draw:
                     messageField.text = "You Draw";

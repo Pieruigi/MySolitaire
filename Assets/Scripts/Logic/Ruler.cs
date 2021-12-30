@@ -260,7 +260,7 @@ namespace Zoca.Logic
                     {
                         // If the cards have the same suit and the target card value is equal to the source card
                         // value - 1 you can move
-                        if (targetPile.GetLast().Suit == sourcePile.GetLast().Suit &&
+                        if (!targetPile.IsEmpty() && targetPile.GetLast().Suit == sourcePile.GetLast().Suit &&
                            targetPile.GetLast().Value == sourcePile.GetLast().Value - 1)
                             ret = true;
                     }

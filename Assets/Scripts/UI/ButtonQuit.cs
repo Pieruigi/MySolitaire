@@ -8,6 +8,8 @@ namespace Zoca.UI
 {
     public class ButtonQuit : MonoBehaviour
     {
+        bool leaving = false;
+
         private void Awake()
         {
             GetComponent<Button>().onClick.AddListener(Quit);
@@ -27,16 +29,33 @@ namespace Zoca.UI
 
         void Quit()
         {
+            if (leaving)
+                return;
+            leaving = true;
+
             if (GameManager.Instance.InGame)
             {
                 // Quit the current game
-                GameManager.Instance.LoadSceneById(GameManager.MainSceneId);
+                StartCoroutine(LoadMainScene());
             }
             else
             {
                 // Quit the app
-                Application.Quit();
+                //Application.Quit();
+                StartCoroutine(QuitApplication());
             }
+        }
+
+        IEnumerator LoadMainScene()
+        {
+            yield return new WaitForSeconds(0.5f);
+            GameManager.Instance.LoadSceneById(GameManager.MainSceneId);
+        }
+
+        IEnumerator QuitApplication()
+        {
+            yield return new WaitForSeconds(0.5f);
+            Application.Quit();
         }
     }
 
