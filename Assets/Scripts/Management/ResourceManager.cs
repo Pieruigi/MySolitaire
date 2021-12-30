@@ -21,7 +21,7 @@ namespace Zoca.Management
         #region private fields
         // Resources folder
         string deckResourceFolder = "Napoletane";
-        string tableResourceFolder = "Default";
+        //string tableResourceFolder = "Tables";
 
         // Save data
         string playerPrefsDeckName = "Deck";
@@ -37,14 +37,14 @@ namespace Zoca.Management
 
                 // Try to get data from player prefs
                 
-                if (PlayerPrefs.HasKey(playerPrefsTableName))
-                {
-                    tableResourceFolder = PlayerPrefs.GetString(playerPrefsTableName);
-                }
-                if (PlayerPrefs.HasKey(playerPrefsDeckName))
-                {
-                    deckResourceFolder = PlayerPrefs.GetString(playerPrefsDeckName);
-                }
+                //if (PlayerPrefs.HasKey(playerPrefsTableName))
+                //{
+                //    tableResourceFolder = PlayerPrefs.GetString(playerPrefsTableName);
+                //}
+                //if (PlayerPrefs.HasKey(playerPrefsDeckName))
+                //{
+                //    deckResourceFolder = PlayerPrefs.GetString(playerPrefsDeckName);
+                //}
 
             }
             else
@@ -91,6 +91,12 @@ namespace Zoca.Management
             string deckFolder = System.IO.Path.Combine(DecksResourcesBaseFolder, deckResourceFolder);
             //deckFolder = System.IO.Path.Combine(deckFolder, DeckResourcesBackFolder);
             return Resources.LoadAll<Sprite>(deckFolder);
+        }
+
+        public Sprite[] GetTablesSprites()
+        {
+            string folder = TablesResourcesBaseFolder;
+            return Resources.LoadAll<Sprite>(folder);
         }
         #endregion
 

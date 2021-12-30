@@ -1080,14 +1080,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1497415347278618482, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 640.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 1497415347278618482, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 221.4
-      objectReference: {fileID: 0}
     - target: {fileID: 4844235817280131358, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
       propertyPath: interactionAudioSource
       value: 
@@ -1103,10 +1095,6 @@ PrefabInstance:
     - target: {fileID: 4844235817280131359, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
       propertyPath: m_Name
       value: GameUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 4844235817280131359, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4844235817280131426, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
       propertyPath: m_Pivot.x
@@ -1196,54 +1184,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
-    - target: {fileID: 4844235817280131427, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_RenderMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6061831590217899848, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6061831590217899848, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: e3bada1877497b24d8064e8401923e45, type: 3}
-    - target: {fileID: 6061831590217899848, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_PreserveAspect
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511377309850933554, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_Text
-      value: Rigira
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511377309850933554, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511377309850933554, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511377309850933554, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511377309850933554, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 77422c9b26f475542b0d39361daab6f2, type: 3}
-    - target: {fileID: 6511377309850933554, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_FontData.m_MaxSize
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511377309850933554, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_FontData.m_MinSize
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6511377309850933554, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
-      propertyPath: m_FontData.m_FontSize
-      value: 60
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 564146aabd6698042b7f3b4f05d3d114, type: 3}
 --- !u!1001 &5768152581851562043
