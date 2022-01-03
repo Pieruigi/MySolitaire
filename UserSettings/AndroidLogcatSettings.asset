@@ -11,12 +11,6 @@
         {
             "deviceId": "127.0.0.1:62001",
             "name": "com.vphone.launcher",
-            "processId": 2531,
-            "exited": true
-        },
-        {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.vphone.launcher",
             "processId": 2523,
             "exited": true
         },
@@ -30,6 +24,24 @@
             "deviceId": "127.0.0.1:62001",
             "name": "com.vphone.launcher",
             "processId": 2505,
+            "exited": true
+        },
+        {
+            "deviceId": "127.0.0.1:62001",
+            "name": "com.vphone.launcher",
+            "processId": 2517,
+            "exited": true
+        },
+        {
+            "deviceId": "127.0.0.1:62001",
+            "name": "com.ul.test.hawking",
+            "processId": 3910,
+            "exited": true
+        },
+        {
+            "deviceId": "127.0.0.1:62001",
+            "name": "com.vphone.launcher",
+            "processId": 2529,
             "exited": false
         }
     ],

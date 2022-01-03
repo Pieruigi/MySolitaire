@@ -65,13 +65,37 @@ namespace Zoca.Management
         #region public methods
         public void LoadScores()
         {
-            
-            Social.LoadScores(leaderboardId, OnLeaderboardLoaded);
+            Debug.Log("LoadingScores...");
+
+            PlayGamesPlatform.Instance.LoadScores(
+            leaderboardId,
+            LeaderboardStart.PlayerCentered,
+            100,
+            LeaderboardCollection.Public,
+            LeaderboardTimeSpan.AllTime,
+            (data) =>
+            {
+                Debug.Log("LoadScores called");
+                
+                Debug.Log("Leaderboard data valid: " + data.Valid);
+
+                Debug.Log("approx:" + data.ApproximateCount + " have " + data.Scores.Length);
+            });
+
+            //Social.LoadScores(leaderboardId, OnLeaderboardLoaded);
         }
 
         public void ReportScore(int score)
         {
-            Social.ReportScore(score, leaderboardId, OnScorePosted);
+            //Social.ReportScore(score, leaderboardId, OnScorePosted);
+            PlayGamesPlatform.Instance.ReportScore(120, leaderboardId, (result) =>
+            {
+                if (result) Debug.Log("succeeded");
+                else
+                    Debug.Log("failed");
+            });
+
+            
         }
 
 

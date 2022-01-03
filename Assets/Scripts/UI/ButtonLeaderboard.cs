@@ -33,6 +33,7 @@ namespace Zoca.UI
             //}
 
             LeaderboardManager.Instance.LoadScores();
+            //LeaderboardManager.Instance.ReportScore(100);
         }
     }
 
