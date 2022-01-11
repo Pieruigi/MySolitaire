@@ -12,6 +12,8 @@ namespace Zoca.UI
         [SerializeField]
         Text textField;
 
+        
+
         string singularTextFormat = "{0} mossa rimasta";
         string pluralTextFormat = "{0} mosse rimaste";
 
@@ -20,6 +22,7 @@ namespace Zoca.UI
         private void Awake()
         {
             textField.enabled = false;
+            textField.transform.parent.GetComponent<Image>().enabled = false;
         }
 
         // Start is called before the first frame update
@@ -36,7 +39,11 @@ namespace Zoca.UI
             if (textField.enabled)
             {
                 if ((DateTime.UtcNow - lastTime).TotalSeconds > 2)
+                {
                     textField.enabled = false;
+                    textField.transform.parent.GetComponent<Image>().enabled = false;
+                }
+                    
             }
             
         }
@@ -45,6 +52,7 @@ namespace Zoca.UI
         {
             
             textField.enabled = true;
+            textField.transform.parent.GetComponent<Image>().enabled = true;
 
             if (attemptsLeft == 1)
                 textField.text = string.Format(singularTextFormat, attemptsLeft);
