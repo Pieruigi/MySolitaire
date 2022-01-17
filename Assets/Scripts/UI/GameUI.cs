@@ -367,17 +367,17 @@ namespace Zoca.UI
 
             // You can not select from deck if the discard pile is not empty and one of the other piles
             // is empty.
-            if (selected == null && GetIndex(target) == 0 && !Ruler.Instance.GetCardPileAt(1).IsEmpty() &&
-                (
-                Ruler.Instance.GetCardPileAt(2).IsEmpty() ||
-                Ruler.Instance.GetCardPileAt(4).IsEmpty() ||
-                Ruler.Instance.GetCardPileAt(6).IsEmpty() ||
-                Ruler.Instance.GetCardPileAt(8).IsEmpty()
-                ))
-            {
-                interactionFailedAudioSource.Play();
-                return;
-            }
+            //if (selected == null && GetIndex(target) == 0 && !Ruler.Instance.GetCardPileAt(1).IsEmpty() &&
+            //    (
+            //    Ruler.Instance.GetCardPileAt(2).IsEmpty() ||
+            //    Ruler.Instance.GetCardPileAt(4).IsEmpty() ||
+            //    Ruler.Instance.GetCardPileAt(6).IsEmpty() ||
+            //    Ruler.Instance.GetCardPileAt(8).IsEmpty()
+            //    ))
+            //{
+            //    interactionFailedAudioSource.Play();
+            //    return;
+            //}
                 
 
             // You can not select an empty card pile as first selection

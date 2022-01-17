@@ -214,7 +214,10 @@ namespace Zoca.Logic
                     break;
                 case 1:
                     
-                    if (sourceId == 0)
+                    // You can move on the discard pile from the deck only if north, south, east
+                    // and west are not free
+
+                    if (sourceId == 0 && !piles[2].IsEmpty() && !piles[4].IsEmpty() && !piles[6].IsEmpty() && !piles[8].IsEmpty())
                         ret = true;
                     //// You can always move on the discard pile from the deck...
                     //if(sourceId == 0)
@@ -336,10 +339,10 @@ namespace Zoca.Logic
                     switch (SettingsManager.Instance.Difficulty)
                     {
                         case 0:
-                            attemptsLeft = 9;
+                            attemptsLeft = 5;
                             break;
                         case 1:
-                            attemptsLeft = 6;
+                            attemptsLeft = 4;
                             break;
                         case 2:
                             attemptsLeft = 3;
