@@ -1,47 +1,35 @@
 {
-    "m_SelectedDeviceId": "127.0.0.1:62001",
+    "m_SelectedDeviceId": "504723b5",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "504723b5",
+        "name": "com.filrac.mySolitaire",
+        "processId": 11765,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.ul.test.hawking",
-            "processId": 6348,
-            "exited": true
+            "deviceId": "504723b5",
+            "name": "com.DefaultCompany.com.unity.template.mobile2D",
+            "processId": 7302,
+            "exited": false
         },
         {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.vphone.launcher",
-            "processId": 2505,
-            "exited": true
+            "deviceId": "504723b5",
+            "name": "com.filrac.mySolitaire",
+            "processId": 9187,
+            "exited": false
         },
         {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.vphone.launcher",
-            "processId": 2517,
-            "exited": true
+            "deviceId": "504723b5",
+            "name": "com.filrac.mySolitaire",
+            "processId": 10942,
+            "exited": false
         },
         {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.ul.test.hawking",
-            "processId": 3910,
-            "exited": true
-        },
-        {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.vphone.launcher",
-            "processId": 2529,
-            "exited": true
-        },
-        {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.vphone.launcher",
-            "processId": 2522,
+            "deviceId": "504723b5",
+            "name": "com.filrac.mySolitaire",
+            "processId": 11765,
             "exited": false
         }
     ],
