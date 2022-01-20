@@ -18,10 +18,14 @@ namespace Zoca.UI
         [SerializeField]
         List<Sprite> sprites;
 
+        [SerializeField]
+        List<string> texts;
+
         int state;
         int stateCount;
         Button button;
         Image image;
+        Text text;
         #endregion
 
         #region protected methods
@@ -40,6 +44,8 @@ namespace Zoca.UI
 
         protected virtual void Start()
         {
+            text = GetComponentInChildren<Text>();
+
             // The number of the states is equal to the number of the sprites
             stateCount = sprites.Count;
 
@@ -48,6 +54,8 @@ namespace Zoca.UI
 
             // Set the corresponding sprite
             image.sprite = sprites[state];
+            if (texts.Count > 0)
+                text.text = texts[state];
 
             // Add the on click listener
             button.onClick.AddListener(HandleOnClick);
@@ -64,6 +72,8 @@ namespace Zoca.UI
 
             // Change the sprite
             image.sprite = sprites[state];
+            if (texts.Count > 0)
+                text.text = texts[state];
 
             // Call update on child 
             OnStateChanged(state);

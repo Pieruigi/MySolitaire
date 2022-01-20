@@ -7,6 +7,7 @@ namespace Zoca.UI
 {
     public class DifficultyButton : MultiStateButton
     {
+        
         protected override int GetCurrentState()
         {
             // Get settings
