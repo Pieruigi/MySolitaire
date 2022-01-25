@@ -21,6 +21,8 @@ namespace Zoca.Management
         #region private fields
         // Resources folder
         string deckResourceFolder = "Napoletane";
+        string naplesDeckResourceFolder = "Napoletane";
+        string frenchDeckResourceFolder = "French";
         //string tableResourceFolder = "Tables";
 
         // Save data
@@ -73,6 +75,7 @@ namespace Zoca.Management
         /// <returns></returns>
         public Sprite[] GetSetOfCardsFrontSprites()
         {
+            deckResourceFolder = SettingsManager.Instance.DeckId == 0 ? naplesDeckResourceFolder : frenchDeckResourceFolder;
             string deckFolder = System.IO.Path.Combine(DecksResourcesBaseFolder, deckResourceFolder);
             deckFolder = System.IO.Path.Combine(deckFolder, DeckResourcesFrontFolder);
             return Resources.LoadAll<Sprite>(deckFolder);
@@ -88,6 +91,7 @@ namespace Zoca.Management
         /// <returns></returns>
         public Sprite[] GetSetOfCardsBackSprites()
         {
+            deckResourceFolder = SettingsManager.Instance.DeckId == 0 ? naplesDeckResourceFolder : frenchDeckResourceFolder;
             string deckFolder = System.IO.Path.Combine(DecksResourcesBaseFolder, deckResourceFolder);
             //deckFolder = System.IO.Path.Combine(deckFolder, DeckResourcesBackFolder);
             return Resources.LoadAll<Sprite>(deckFolder);
@@ -98,6 +102,8 @@ namespace Zoca.Management
             string folder = TablesResourcesBaseFolder;
             return Resources.LoadAll<Sprite>(folder);
         }
+
+        //public void SetDeckType()
         #endregion
 
     }

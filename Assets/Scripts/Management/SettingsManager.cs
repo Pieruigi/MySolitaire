@@ -21,6 +21,11 @@ namespace Zoca.Management
         {
             get { return difficulty; }
         }
+
+        public int DeckId
+        {
+            get { return deckId; }
+        }
         #endregion
 
         #region private fields
@@ -46,6 +51,14 @@ namespace Zoca.Management
         /// </summary>
         int difficulty = 1;
         string difficultyParamName = "Difficulty";
+
+        /// <summary>
+        /// Deck type:
+        /// 0 - Naples
+        /// 1 - French
+        /// </summary>
+        int deckId = 0;
+        string deckIdParamName = "DeckId";
         #endregion
 
         #region private methods
@@ -63,6 +76,9 @@ namespace Zoca.Management
 
                 // Difficulty
                 InitDifficulty();
+
+                // Deck
+                InitDeck();
 
                 saveEnabled = true;
 
@@ -108,6 +124,25 @@ namespace Zoca.Management
                 InternalSetDifficulty(PlayerPrefs.GetInt(difficultyParamName));
             else
                 InternalSetDifficulty(difficulty);
+        }
+
+        void InitDeck()
+        {
+            if (PlayerPrefs.HasKey(deckIdParamName))
+                InternalSetDeckId(PlayerPrefs.GetInt(deckIdParamName));
+            else
+                InternalSetDeckId(deckId);
+        }
+
+        void InternalSetDeckId(int deckId)
+        {
+            this.deckId = deckId;
+
+            if(saveEnabled)
+            {
+                PlayerPrefs.SetInt(deckIdParamName, deckId);
+                PlayerPrefs.Save();
+            }
         }
 
         void InternalSetGameSpeed(float gameSpeed)
@@ -183,6 +218,11 @@ namespace Zoca.Management
         public void SetDifficulty(int difficulty)
         {
             InternalSetDifficulty(difficulty);
+        }
+
+        public void SetDeckId(int deckId)
+        {
+            InternalSetDeckId(deckId);
         }
 
         #endregion
