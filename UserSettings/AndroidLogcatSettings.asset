@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "57U7N17927038338",
         "name": "com.filrac.mySolitaire",
-        "processId": 27163,
+        "processId": 19655,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -36,6 +36,54 @@
             "deviceId": "57U7N17927038338",
             "name": "com.filrac.mySolitaire",
             "processId": 27163,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.filrac.mySolitaire",
+            "processId": 11457,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.filrac.mySolitaire",
+            "processId": 12216,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.filrac.mySolitaire",
+            "processId": 12734,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.filrac.mySolitaire",
+            "processId": 13465,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.filrac.mySolitaire",
+            "processId": 16065,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.filrac.mySolitaire",
+            "processId": 17948,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.filrac.mySolitaire",
+            "processId": 18805,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.filrac.mySolitaire",
+            "processId": 19655,
             "exited": false
         }
     ],

@@ -32,6 +32,9 @@ namespace Zoca.Logic
         {
             get { return attemptsLeft; }
         }
+
+        public bool IsCompleted { get; private set; }
+        
         #endregion
 
 
@@ -45,7 +48,7 @@ namespace Zoca.Logic
         List<CardPile> piles;
 
 
-
+        
         bool secondDeck = false;
         int attemptsLeft = -1;
 
@@ -281,6 +284,7 @@ namespace Zoca.Logic
             if (YouWin())
             {
                 // You win the game
+                IsCompleted = true;
                 OnGameComplete?.Invoke((int)GameResult.Victory);
             }
             else
@@ -290,6 +294,7 @@ namespace Zoca.Logic
                 {
                     if (attemptsLeft == 0)
                     {
+                        IsCompleted = true;
                         OnGameComplete?.Invoke((int)GameResult.Defeat);
                     }
                     else
