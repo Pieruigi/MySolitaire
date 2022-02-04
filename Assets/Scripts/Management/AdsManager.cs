@@ -87,7 +87,7 @@ namespace Zoca.Management
 
 #if UNITY_ANDROID
             string adUnitId = "ca-app-pub-5242852541574124/7810106057";
-            adUnitId = "ca-app-pub-3940256099942544/1033173712"; // Test id
+            //adUnitId = "ca-app-pub-3940256099942544/1033173712"; // Test id
 #elif UNITY_IPHONE
                 string adUnitId = "ca-app-pub-3940256099942544/4411468910";
 #else
