@@ -35,8 +35,18 @@ namespace Zoca.UI
 
             if (GameManager.Instance.InGame)
             {
-                // Quit the current game
-                StartCoroutine(LoadMainScene());
+                if (AdsManager.Instance.IsInterstitialLoaded())
+                {
+                    if (!AdsManager.Instance.TryShowInterstitial(HandleOnInterstitialClosed))
+                        StartCoroutine(LoadMainScene());
+                }
+                else
+                {
+                    StartCoroutine(LoadMainScene());
+                }
+
+                //// Quit the current game
+                //StartCoroutine(LoadMainScene());
             }
             else
             {
@@ -56,6 +66,11 @@ namespace Zoca.UI
         {
             yield return new WaitForSeconds(0.5f);
             Application.Quit();
+        }
+
+        void HandleOnInterstitialClosed()
+        {
+            StartCoroutine(LoadMainScene());
         }
     }
 

@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "57U7N17927038338",
         "name": "com.filrac.mySolitaire",
-        "processId": 19655,
+        "processId": 25384,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -84,6 +84,18 @@
             "deviceId": "57U7N17927038338",
             "name": "com.filrac.mySolitaire",
             "processId": 19655,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.filrac.mySolitaire",
+            "processId": 19907,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.filrac.mySolitaire",
+            "processId": 25384,
             "exited": false
         }
     ],

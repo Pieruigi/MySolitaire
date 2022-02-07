@@ -20,8 +20,8 @@ namespace Zoca.Logic
         #region properties
 
         public static Ruler Instance { get; private set; }
-        
 
+        
         //public static void Destroy()
         //{
         //    if (instance != null)
@@ -285,6 +285,7 @@ namespace Zoca.Logic
             {
                 // You win the game
                 IsCompleted = true;
+                StatsManager.Instance.UpdateStats();
                 OnGameComplete?.Invoke((int)GameResult.Victory);
             }
             else
