@@ -28,7 +28,7 @@ namespace Zoca.Management
 
         DateTime lastCheckTime;
         bool interstitialLoading = false;
-        float loadTime = 1f;
+        float loadTime = 10f;
         UnityAction interstitialClosedCallback;
         #endregion
 
@@ -152,7 +152,10 @@ namespace Zoca.Management
             Debug.LogFormat("Interstitial closed");
             //OnInterstitialClosed?.Invoke();
             interstitial = null;
+            if (interstitialClosedCallback == null)
+                return;
             interstitialClosedCallback?.Invoke();
+            interstitialClosedCallback = null;
         }
         #endregion
 
@@ -170,7 +173,7 @@ namespace Zoca.Management
         /// </summary>
         public bool TryShowInterstitial(UnityAction closedCallback = null)
         {
-
+            Debug.Log("Trying to show intertitial...");
             if (interstitial != null && interstitial.IsLoaded())
             {
                 interstitialClosedCallback = closedCallback;

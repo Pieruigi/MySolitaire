@@ -38,14 +38,14 @@ namespace Zoca.UI
             {
                 bool show = false;
 
-                if (Ruler.Instance.IsCompleted)
-                {
-                    show = true;
-                }
-                else
-                {
-                    show = Random.Range(0, 3) == 0 ? true : false;
-                }
+                //if (Ruler.Instance.IsCompleted)
+                //{
+                //    show = true;
+                //}
+                //else
+                //{
+                //    show = Random.Range(0, 3) == 0 ? true : false;
+                //}
 
                 // Check if the game is completed
                 if (show)
